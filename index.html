@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--deep-navy);
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--accent-ink);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    .fade-in:nth-of-type(2) { animation-delay: 0.3s; }
+    .fade-in:nth-of-type(3) { animation-delay: 0.6s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    header {
+      background-color: var(--pale-sky);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .grid-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1 1 30%;
+      text-align: center;
+    }
+
+    .image-block {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: var(--cool-silver);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--deep-navy);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-link {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-coral);
+      text-decoration: none;
+    }
+
+    .section-link:hover {
+      color: var(--deep-navy);
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <div class="dropdown">
+      <a href="resources.html">Resources</a>
+      <div class="dropdown-content">
+        <a href="resources-notes.html">Detailed Notes</a>
+        <a href="resources-flashcards.html">Flashcards</a>
+        <a href="resources-quizzes.html">Quizzes</a>
+        <a href="resources-papers.html">Question Papers</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="fade-in">
+    <h1>Hanolka Tutoring</h1>
+    <p>Thoughtfully tailored support for students worldwide — from GCSE & A-Level to beyond the UK specification.</p>
+  </header>
+
+  <section class="fade-in grid-section">
+    <div class="card">
+      <div class="image-block">[Image: Tutoring session]</div>
+      <a href="find-a-tutor.html" class="section-link">Find a Tutor</a>
+    </div>
+
+    <div class="card">
+      <div class="image-block">[Image: Tutor at laptop]</div>
+      <a href="become-a-tutor.html" class="section-link">Become a Tutor</a>
+    </div>
+
+    <div class="card">
+      <div class="image-block">[Image: Study tools]</div>
+      <a href="resources.html" class="section-link">Resources</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
+  </footer>
+</body>
+</html>

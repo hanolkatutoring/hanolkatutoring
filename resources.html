@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources | Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 2.5rem;
+      background-color: var(--deep-navy);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      padding: 1rem;
+      z-index: 1;
+      flex-direction: column;
+      min-width: 180px;
+    }
+
+    .dropdown-content a {
+      padding: 0.5rem 0;
+      white-space: nowrap;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+
+    header {
+      background-color: var(--pale-sky);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .maintenance {
+      font-size: 1.5rem;
+      background-color: var(--cool-silver);
+      padding: 2rem;
+      border-radius: 10px;
+      color: var(--accent-ink);
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <div class="dropdown">
+      <a href="resources.html">Resources</a>
+      <div class="dropdown-content">
+        <a href="resources-notes.html">Detailed Notes</a>
+        <a href="resources-flashcards.html">Flashcards</a>
+        <a href="resources-quizzes.html">Quizzes</a>
+        <a href="resources-papers.html">Question Papers</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <h1>Resources for Effective Learning</h1>
+    <p>Explore a variety of study aids designed to enrich your learning experience.</p>
+  </header>
+
+  <section>
+    <div class="maintenance">
+      This section is currently under maintenance. We’re working hard behind the scenes to create truly helpful and thoughtfully designed resources for students. Expect them to be ready soon.
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Empowering students, one lesson at a time.
+  </footer>
+</body>
+</html>
