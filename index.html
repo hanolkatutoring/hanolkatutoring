@@ -27,7 +27,6 @@
       color: var(--deep-navy);
       line-height: 1.6;
       scroll-behavior: smooth;
-      
     }
 
     nav {
@@ -159,16 +158,28 @@
     }
 
     footer {
-  width: 100%;
-  background-color: var(--deep-navy);
-  color: white;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.9rem;
-  position: relative;
-  left: 0;
-  margin-top: 4rem;
-}
+      width: 100%;
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      position: relative;
+      left: 0;
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid-section {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -196,31 +207,29 @@
       <p>Thoughtfully tailored support for students worldwide — from GCSE & A-Level to beyond the UK specification.</p>
     </div>
   </header>
-  
 
   <section class="fade-in grid-section">
     <div class="card">
-        <div class="image-block">
-            <img src="tutoring-session.png" alt="Tutoring session illustration" style="width: 100%; height: auto; border-radius: 8px;" />
-          </div>
+      <div class="image-block">
+        <img src="tutoring-session.png" alt="Tutoring session illustration" style="width: 100%; height: auto; border-radius: 8px;" />
+      </div>
       <a href="find-a-tutor.html" class="section-link">Find a Tutor</a>
     </div>
 
     <div class="card">
-  <div class="image-block">
-    <img src="study-tools.png" alt="Illustration of tutor at laptop" style="width: 100%; height: auto; border-radius: 8px;" />
-  </div>
-  <a href="become-a-tutor.html" class="section-link">Become a Tutor</a>
-</div>
-
-<div class="card">
-    <div class="image-block">
-      <img src="resources.png" alt="Cartoon-style notes and question papers" style="width: 100%; height: auto; border-radius: 8px;" />
+      <div class="image-block">
+        <img src="study-tools.png" alt="Illustration of tutor at laptop" style="width: 100%; height: auto; border-radius: 8px;" />
+      </div>
+      <a href="become-a-tutor.html" class="section-link">Become a Tutor</a>
     </div>
-    <a href="resources-constr.html" class="section-link">Resources</a>
-  </div>
 
-</section>
+    <div class="card">
+      <div class="image-block">
+        <img src="resources.png" alt="Cartoon-style notes and question papers" style="width: 100%; height: auto; border-radius: 8px;" />
+      </div>
+      <a href="resources-constr.html" class="section-link">Resources</a>
+    </div>
+  </section>
 
   <footer>
     &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
