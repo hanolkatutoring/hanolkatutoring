@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources | Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 60px; /* Adjusts for the fixed navbar */
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: fixed; /* Makes the navbar fixed at the top */
+      top: 0;
+      width: 100%;
+      z-index: 1000; /* Ensures navbar stays on top */
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .content {
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+      max-width: 800px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <a href="resources-constr.html">Resources</a>
+  </nav>
+
+  <header>
+    <h1>Resources Page</h1>
+  </header>
+
+  <div class="content">
+    <p>We are currently working hard to bring you a comprehensive selection of high-quality revision materials.</p>
+    <p>Our team is dedicated to creating the best resources for your learning journey. Stay tuned as we continue to enhance this section with valuable content designed to help you excel.</p>
+    <p>We appreciate your patience and look forward to providing you with the tools you need for success.</p>
+  </div>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Empowering students, one lesson at a time.
+  </footer>
+
+</body>
+</html>
