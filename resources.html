@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
   <title>Resources | Hanolka Tutoring</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -149,6 +150,47 @@
       padding: 2rem;
       font-size: 0.9rem;
     }
+    footer form {
+      margin-top: 1rem;
+    }
+
+    footer input[type="email"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px 0 0 5px;
+      width: 220px;
+      max-width: 80vw;
+      outline: none;
+    }
+
+    footer button[type="submit"] {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      background-color: var(--accent-coral);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    footer button[type="submit"]:hover {
+      background-color: #e0665d;
+    }
+
+    @media (max-width: 768px) {
+      .grid-section {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -158,13 +200,13 @@
     <a href="find-a-tutor.html">Find a Tutor</a>
     <a href="become-a-tutor.html">Become a Tutor</a>
     <div class="dropdown">
-      <a href="resources.html">Resources</a>
+      <a href="resources.html">Resources (more coming soon)</a>
       <div class="dropdown-content">
-        <a href="resources-biology.html">Biology</a>
-        <a href="resources-maths.html">Maths</a>
-        <a href="resources-chemistry.html">Chemistry</a>
-        <a href="resources-physics.html">Physics</a>
-        <a href="resources-english.html">English</a>
+        <a href="biology.html">Biology (only AQA at the moment)</a>
+        <a href="resources-constr.html">Maths (coming soon)</a>
+        <a href="resources-constr.html">Chemistry (coming soon)</a>
+        <a href="resources-constr.html">Physics (coming soon)</a>
+        <a href="resources-constr.html">English (coming soon)</a>
       </div>
     </div>
   </nav>
@@ -176,17 +218,22 @@
 
   <section>
     <div class="resource-grid">
-      <div class="resource-card"><a href="biology.html">Biology</a></div>
-      <div class="resource-card"><a href="chemistry.html">Chemistry</a></div>
-      <div class="resource-card"><a href="physics.html">Physics</a></div>
-      <div class="resource-card"><a href="maths.html">Maths</a></div>
-      <div class="resource-card"><a href="english.html">English</a></div>
+      <div class="resource-card"><a href="biology.html">Biology (only AQA at the moment)</a></div>
+      <div class="resource-card"><a href="resources-constr.html">Chemistry (coming soon)</a></div>
+      <div class="resource-card"><a href="resources-constr.html">Physics (coming soon)</a></div>
+      <div class="resource-card"><a href="resources-constr.html">Maths (coming soon)</a></div>
+      <div class="resource-card"><a href="resources-constr.html">English (coming soon)</a></div>
     </div>
   </section>
 
-  <footer>
-    &copy; 2025 Hanolka Tutoring — Empowering students, one lesson at a time.
+ <footer>
+    &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
+    <form action="https://formspree.io/f/mgvajrja" method="POST" target="_blank" style="margin-top:1rem;">
+      <input type="email" name="email" placeholder="Subscribe to our newsletter" required aria-label="Email address">
+      <button type="submit">Subscribe</button>
+    </form>
   </footer>
+  
 </body>
 </html>
 

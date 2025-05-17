@@ -88,6 +88,47 @@
   left: 0;
   margin-top: 4rem;
 }
+footer form {
+      margin-top: 1rem;
+    }
+
+    footer input[type="email"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px 0 0 5px;
+      width: 220px;
+      max-width: 80vw;
+      outline: none;
+    }
+
+    footer button[type="submit"] {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      background-color: var(--accent-coral);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    footer button[type="submit"]:hover {
+      background-color: #e0665d;
+    }
+
+    @media (max-width: 768px) {
+      .grid-section {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 2rem;
+      }
+    }
 
   </style>
 </head>
@@ -108,12 +149,17 @@
 
   <div class="content">
     <p>We are currently working hard to bring you a comprehensive selection of high-quality revision materials.</p>
-    <p>Our team is dedicated to creating the best resources for your learning journey. Stay tuned as we continue to enhance this section with valuable content designed to help you excel.</p>
+    <p>At the moment, we have only published detailed AQA A-level biology notes.</p>
+    <p>Our team is dedicated to creating the best resources for your learning journey. Stay tuned by subcribing to our newsletter at the bottom of the page as we continue to enhance our resources with valuable content designed to help you excel.</p>
     <p>We appreciate your patience and look forward to providing you with the tools you need for success.</p>
   </div>
 
   <footer>
     &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
+    <form action="https://formspree.io/f/mgvajrja" method="POST" target="_blank" style="margin-top:1rem;">
+      <input type="email" name="email" placeholder="Subscribe to our newsletter" required aria-label="Email address">
+      <button type="submit">Subscribe</button>
+    </form>
   </footer>
 
 </body>
