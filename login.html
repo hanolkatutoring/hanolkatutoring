@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Hanolka Tutoring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display&display=swap" rel="stylesheet">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.42.3/dist/umd/supabase.min.js"></script>
+
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--accent-coral);
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--cool-silver);
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--accent-coral);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e0665d;
+    }
+
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      color: red;
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <a href="resources.html">Resources</a>
+     <a href="contact.html">Contact Us</a>
+
+  </nav>
+
+  <div class="login-container">
+    <h2>Login or Register</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="register()">Register</button>   
+    <button onclick="login()">Login</button>
+  <button id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
+
+    <div id="message"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring. All rights reserved.
+  </footer>
+
+  <script>
+  const SUPABASE_URL = "https://hekbaoeuknlzpelqbkmy.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhla2Jhb2V1a25senBlbHFia215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2MjQ2NTksImV4cCI6MjA2NDIwMDY1OX0.eip0nBkXozALbCF3wr2TuKJCalBzn-6gP7Hw0cMWq2k";
+
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const logoutBtn = document.getElementById("logout-btn");
+
+  async function checkAuth() {
+    const {
+      data: { session }
+    } = await client.auth.getSession();
+
+    if (session && session.user) {
+      logoutBtn.style.display = "block";
+    } else {
+      logoutBtn.style.display = "none";
+    }
+  }
+
+  async function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const { error } = await client.auth.signUp({ email, password });
+    document.getElementById("message").innerText = error ? error.message : "Check your inbox to confirm registration.";
+  }
+
+  async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      document.getElementById("message").innerText = error.message;
+    } else {
+      localStorage.setItem("sb-token", data.session.access_token);
+      window.location.href = "index.html";
+    }
+  }
+
+  async function logout() {
+    await client.auth.signOut();
+    localStorage.removeItem("sb-token");
+    document.getElementById("message").innerText = "Logged out!";
+    logoutBtn.style.display = "none";
+  }
+
+  // Call checkAuth on page load
+  checkAuth();
+</script>
+
+</body>
+</html>
