@@ -246,6 +246,21 @@
 </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading-screen" style="
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1F2D3D;
+    z-index: 2000;">
+    Checking login status...
+  </div>
   <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
@@ -274,6 +289,26 @@
   <footer>
     &copy; 2025 Hanolka Tutoring — Empowering students, one lesson at a time.
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const SUPABASE_URL = "https://hekbaoeuknlzpelqbkmy.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhla2Jhb2V1a25senBlbHFia215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2MjQ2NTksImV4cCI6MjA2NDIwMDY1OX0.eip0nBkXozALbCF3wr2TuKJCalBzn-6gP7Hw0cMWq2k";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function checkSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      const loadingScreen = document.getElementById("loading-screen");
+
+      if (!session) {
+        window.location.href = "login.html";
+      } else {
+        loadingScreen.style.display = "none";
+      }
+    }
+
+    checkSession();
+  </script>
 
   <script>
     const topics = {
