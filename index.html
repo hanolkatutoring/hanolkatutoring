@@ -341,15 +341,36 @@
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="find-a-tutor.html">Find a Tutor</a>
-    <a href="become-a-tutor.html">Become a Tutor</a>
-      <a href="resources.html">Resources (more coming soon)</a>
-      
-     <a href="contact.html">Contact Us</a>
-  </nav>
+
+<nav>
+  <a href="about.html">About</a>
+  <a href="find-a-tutor.html">Find a Tutor</a>
+  <a href="become-a-tutor.html">Become a Tutor</a>
+  <a href="resources.html">Resources</a>
+  <a href="contact.html">Contact</a>
+  
+  <!-- Log In / Sign Up link (visible only when logged out) -->
+  <a href="login.html" id="login-nav" style="margin-left:auto;">Log In / Sign Up</a>
+
+  <!-- Profile Dropdown (shown when logged in) -->
+  <div class="dropdown" id="profile-nav" style="display: none; margin-left: auto;">
+    <a href="#" id="profile-name">Profile ▼</a>
+    <div class="dropdown-content">
+      <a href="#">XP: <span id="nav-xp">0</span></a>
+      <a href="#" onclick="logout()">Log Out</a>
+    </div>
+  </div>
+</nav>
+
+<div id="auth-modal" style="display:none; position:fixed; top:20%; left:35%; background:#fff; padding:20px; border:1px solid #ccc; z-index:1000;">
+  <h3>Login / Signup</h3>
+  <input type="email" id="email" placeholder="Email"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="login(document.getElementById('email').value, document.getElementById('password').value)">Login</button>
+  <button onclick="signup(document.getElementById('email').value, document.getElementById('password').value)">Signup</button><br><br>
+  <button onclick="document.getElementById('auth-modal').style.display='none'">Close</button>
+</div>
+  
 
   <header style="text-align: center; padding: 2rem;">
     <div class="fade-in">
@@ -405,7 +426,17 @@
     </form>
   </footer>
 
-  <script>
+<script type="module">
+  import { checkAuthAndUpdateNav, login, signup, logout } from './auth.js';
+  import { addXP } from './xp.js';
+  window.addEventListener('DOMContentLoaded', () => {
+  checkAuthAndUpdateNav();
+  window.login = login;
+  window.signup = signup;
+  window.logout = logout;
+  window.addXP = addXP;
+  });
+
     // Show the modal popup after 1 second on page load
     window.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('announcementModal');

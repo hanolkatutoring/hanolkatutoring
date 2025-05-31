@@ -132,7 +132,6 @@
     <input type="password" id="password" placeholder="Password" required>
     <button onclick="register()">Register</button>   
     <button onclick="login()">Login</button>
-  <button id="logout-btn" onclick="logout()" style="display: none;">Logout</button>
 
     <div id="message"></div>
   </div>
@@ -181,12 +180,6 @@
     }
   }
 
-  async function logout() {
-    await client.auth.signOut();
-    localStorage.removeItem("sb-token");
-    document.getElementById("message").innerText = "Logged out!";
-    logoutBtn.style.display = "none";
-  }
 
   // Call checkAuth on page load
   checkAuth();
