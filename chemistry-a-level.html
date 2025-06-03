@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>A-Level Chemistry | Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex-grow: 1;
+    }
+
+    header {
+      background-color: var(--pale-sky);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .resource-link {
+      padding: 1rem 2rem;
+      background-color: var(--accent-coral);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      display: inline-block;
+      text-align: center;
+      min-width: 160px;
+      width: 200px;
+      box-sizing: border-box;
+    }
+
+    .resource-link:hover {
+      background-color: var(--accent-ink);
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <a href="resources.html">Resources</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <main>
+    <header>
+      <h1>A-Level Chemistry Resources</h1>
+      <p>Select your exam board to explore tailored Chemistry materials.</p>
+    </header>
+
+    <section>
+      <a href="resources-constr.html" class="resource-link">AQA (coming soon)</a>
+      <a href="resources-constr.html" class="resource-link">Edexcel (coming soon)</a>
+      <a href="chem-a-lvl-ocr.html" class="resource-link">OCR</a>
+      <a href="resources-constr.html" class="resource-link">OCR-MEI (coming soon)</a>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Empowering students, one lesson at a time.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Chemistry Flashcards | OCR A & B | Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+      --grey-btn: #d1d5db;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background-color: var(--pale-sky);
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+    }
+
+    .content-columns {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 2rem;
+    }
+
+    .column {
+      flex: 1 1 400px;
+      max-width: 500px;
+    }
+
+    .flashcards {
+      display: none;
+      position: relative;
+      background-color: white;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .close-flashcard {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-ink);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close-flashcard:hover {
+      color: var(--accent-coral);
+    }
+
+    .flashcards h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--accent-coral);
+      margin-bottom: 1rem;
+    }
+
+    .flashcard-question {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--deep-navy);
+      font-weight: 600;
+    }
+
+    .flashcard-answer {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--accent-ink);
+      display: none;
+    }
+
+    .flashcard-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .flashcard-controls button{
+      padding: 0.5rem 0.5rem;
+      background-color: var(--accent-ink);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+
+
+    .flashcard-controls button:hover{
+      background-color: var(--accent-coral);
+      
+    }
+    .topic-columns {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .topic-column {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .topic-column h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--accent-ink);
+    }
+
+    .module-button {
+      background-color: var(--cool-silver);
+      color: var(--deep-navy);
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .module-button:hover {
+      background-color: var(--accent-ink);
+      color: white;
+    }
+
+    .subtopics {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtopics.active {
+      display: flex;
+    }
+
+    .subtopics button {
+      background-color: var(--accent-coral);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .subtopics button:hover {
+      background-color: var(--deep-navy);
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <a href="resources.html">Resources</a>
+  </nav>
+
+  <header>
+    <h1>OCR A & B A-Level Chemistry Flashcards</h1>
+    <p>Select a topic from OCR A or B to begin reviewing</p>
+  </header>
+
+  <div id="flashcardDisplay" class="flashcards">
+    <button class="close-flashcard" onclick="closeFlashcards()">×</button>
+    <h3 id="topicTitle">Flashcards</h3>
+    <div class="flashcard-question" id="questionText">Click a subtopic to begin.</div>
+    <div class="flashcard-answer" id="answerText"></div>
+    <button onclick="toggleAnswer()" id="showAnswerBtn">Show Answer</button>
+    <div class="flashcard-controls">
+      <button onclick="prevFlashcard()">Previous</button>
+      <button onclick="nextFlashcard()">Next</button>
+    </div>
+  </div>
+
+  <div class="topic-columns">
+    <div class="topic-column" id="OCR-A">
+      <h2>OCR A</h2>
+    </div>
+    <div class="topic-column" id="OCR-B">
+      <h2>OCR B</h2>
+    </div>
+  </div>
+
+  <div class="content-columns">
+    <div class="column" id="ocrA"></div>
+    <div class="column" id="ocrB"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
+  </footer>
+
+  <script>
+    const chemistryTopics = {
+      "OCR A (only AS at the moment)": {
+        "Module 2": {
+         "2.1.3 Amount of Substance": [
+        { q: "What is Avogadro's Constant?", a: "The number of particles in a mol, 6.02x10^23"},
+      { q: "What is a mole?", a: "unit of measurement corresponding to the number of particles in a compound. 1 mole is 6.02x10^23 particles." },
+        { q: "How are the number of moles of a substance calculated from its mass?", a: "Moles= mass/Mr" },
+        { q: "What is RTP?", a: "Room Temperature and Pressure: 298 K, 101 kPa" },
+        { q: "At room temperature and pressure, 1 mole of a gas occupies what volume?", a: "24dm^3 or 24,000cm^3" },
+        { q: "Which type of formula shows the actual number of atoms of each element in a compound?", a: "Molecular formula" },
+        { q: "Which quantity is the mass of a substance per mole (g mol^-1)?", a: "Molar mass"},
+        { q: "State the ideal gas equation.", a: "PV=nRT." },
+        { q: "How can you convert concentration in mol dm^-3 to g dm^-3", a: "multiply by the Mr of the solute." },
+        { q: "Units for pressure in ideal gas equation?", a: "Pascals (Pa)" },
+        { q: "Units for volume and temperature in ideal gas equation?", a: "Cubic meters (m³), Kelvin (K)" },
+        { q: "Which forms of ionic compounds contain water of crystallisation?", a: "Hydrated." },
+        { q: "When heating to remove water of crystallisation, how can you be sure all of the water is gone?", a: "reheat and reweight until constant mass is reached."},
+        { q: "Formula for concentration?", a: "Concentration = Moles / Volume" },
+        { q: "Units for concentration?", a: "mol/dm³" },
+        { q: "Convert cm³ to dm³", a: "Divide by 1000" },
+        { q: "How do you convert cm^3 into m^3?", a:"Divide by 10^6."},
+        { q: "What is empirical formula?", a: "Simplest whole number ratio of atoms in a compound" },
+        { q: "How do you convert degrees C into Kelvin?", a: "Add 273." },
+        { q: "% Yield formula?", a: "(Actual / Theoretical) x 100" },
+        { q: "What is atom economy?", a: "(Mass of desired products/ Total mass of products) x 100" },
+        { q: "Why is atom economy important?", a: "Reduces waste and increases efficiency" },
+        { q: "What is a limiting reagent?", a: "Reactant that determines max amount of product. Reactant that is completely used up." },
+        { q: "How to find limiting reagent?", a: "Compare moles of each reactant" },
+        { q: "Why use excess reagent?", a: "To ensure full reaction of the limiting reagent" }
+      ],
+      "2.1.1 Atomic Structure and Isotopes & 2.1.2 Compounds, Formulae and Equations": [ 
+        { q: "What is the relative molecular mass of nitric acid?", a: "1.0+14.0+3(16.0)=63.0" },
+        { q: "What is an isotope?", a: "Atoms of the same element with the same number of protons and electrons, but different number of neutrons." },
+        { q: "Which isotope has 12 protons and 12 neutrons", a: "Magnesium-24." },
+        { q: "Give the relative masses of protons, neutrons, and electrons", a: "p=1, n=1, e=1/1836." },
+        { q: "Give the 4 state symbols used in equations", a: "s, l, g, aq" },
+        { q: "Which technique allows the measurement of isotopic masses?", a: "Mass Spectrometry" },
+        { q: "Where are protons, neutrons, and electrons located in an atom?", a: "Protons & neutrons in the nucleus; electrons in surrounding shells." },
+        { q: "Give the charges on ions of these atoms: K, Ba, Al, N, S, Br.", a: "K+, Ba2+, Al3+, N3-, S2-, Br-." },
+        { q: "Define relative isotopic mass.", a: "The mass of an isotope compared with 1/12 the mass of an atom of carbon-12." },
+        { q: "A sample of chlorine is 75.78% Cl-35 and 24.22% Cl-37. Calculate relative atomic mass.", a: "(75.78*35)+(24.22*37) then divide by 100= 35.48 to 2 d.p." },
+        { q: "Give the formula & charge of nitrate and sulfate.", a: "NO₃⁻ & SO₄²⁻" },
+        { q: "Give the formula of sodium nitride and sodium nitrate.", a: "Na₃N and NaNO₃" },
+        { q: "Define the relative atomic mass of an atom.", a: "The weighted mean mass of an atom of an element, relative to 1/12 the mass of an atom of C-12." },
+        { q: "Define the relative molecular mass of a molecule.", a: "The mass of a molecule compared to 1/12 the mass of an atom of carbon-12." },
+        { q: "Which isotope is used as a reference for all 'relative' masses", a: "Carbon-12" },
+        { q: "What is the formula for aluminium sulfate?", a: "Al₂(SO₄)₃" },
+        { q: "How do you calculate number of neutrons in an atom?", a: "Subtract the atomic number (Z) from the mass number (A)." },
+        { q: "Give the formula and charge of: ammonium, hydroxide & carbonate.", a: "NH₄+, OH-, CO₃²⁻" }
+    ],
+      "2.1.4 Acids": [
+      { q: "Write the formula of hydrochloric, sulfuric, nitric, and ethanoic acids", a: "HCl, H2SO4, HNO3, CH3COOH" },
+        { q: "When Mg reacts with HNO3, which salt forms?", a: "Magnesium nitrate (MgNO3)" },
+        { q: "What is the maximum difference in volume for titres to be concordat?", a: "Within 0.1cm^3 of each other." },
+        { q: "How are metal ions with varying oxidation states distinguished in compound names?", a: "Using roman numerals, e.g.: Iron(II) is Fe2+" },
+        { q: "Define a base.", a: "H+ (proton) acceptor." },
+        { q: "Define an acid.", a: "H+ (proton) donor." },
+        { q: "What products results from reaction of acid and alkali?", a: "Salt and water." },
+        { q: "What colour is phenolphthalein in acid and alkali?", a: "Colourless in acid, purple/pink in alkali." },
+        { q: "Define an alkali.", a: "A base which releases hydroxide ions in aqueous solution." },
+        { q: "Define a weak acid.", a: "Partially dissociates its H+ in an aqueous solution." },
+        { q: "Write an equation to show how HCl acts as an acid in water.", a: "HCl(g) + H2O(l) -> H3O+(aq) + Cl-(aq)" },
+        { q: "Define a strong acid.", a: "Completely dissociates its H+ in aqueous solution."},
+        { q: "What products result from a reaction between a metal/metal oxide and an acid?", a: "Salt and hydrogen gas."},
+        { q: "What products result from a reaction between a metal carbonate and an acid?", a: "Salt, water, carbon dioxide."},
+        { q: "Use an equation to show how ammonia is an alkali.", a: "NH3 + H2O -> NH4+ + OH-"}
+      ],
+      "2.1.5 Redox": [
+      { q: "When Zn reacts with HCl to make ZnCl2 and H2, which element is oxidised and which is reduced?", a: "Zn is oxidised (0 to +2), H is reduced (+1 to 0)." },
+        { q: "What is the oxidation number of N in Nitrate(V), and what is its formula?", a: "+5, NO₃-" },
+        { q: "How are metal ions with varying oxidation states distinguished in compound names?", a: "Using roman numerals, e.g.: Iron(II) is Fe2+" },
+        { q: "Define a Base.", a: "H+ (proton) acceptor" },
+        { q: "Define oxidation number.", a: "The number of e- that have been removed or added from an element. Equivalent to its charge." },
+        { q: "What's the oxidation number of S in sulfuric acid?", a: "+6 (H is 2*+1, O is 4*-1, so for charge to be 0, S must be +6)." },
+        { q: "Which ions are cancelled out of ionic equations?", a: "Spectator ions (present in reaction, but aren't chemically changed)." },
+        { q: "Write an ionic equation for the reaction of potassium hydroxide and hydrochloric acid.", a: "H+ + OH- -> H2O" },
+        { q: "What is the usual oxidation number of oxygen in a compound, and 2 exceptions?", a: "-2 usually, -1 in peroxides, +2 when bonded to F." },
+        { q: "What is the usual oxidation number of hydrogen in a compound, and the exception?", a: "+1 usually, -1 in metal hydrides." },
+        { q: "Define oxidation and reduction.", a: "Oxidation (loss of e-) is increase in oxidation number, reduction (gain of e-) is decrease." }
+      ],
+      "2.2.1 Electron Structure": [
+        {q: "What is the reason behind the order in which orbitals are filled?", a:"They fill in order of increasing energy."},
+        {q: "How many orbitals make up each of the s, p, and d sub-shells?", a:"s=1, p=3, d=5"},
+        {q: "Explain why P, S and Cl can form more bonds than expected and break the octet rule?", a: "They have d-orbitals in their valence shell so can hold up to 18 e-."},
+        {q: "Give the electron configuration of Cu+.", a: "[Ar]3d10"},
+        {q: "Why do electrons occupy single orbitals first before pairing up?", a: "The electrons repel, so occupy seperate orbitals to be more stable."},
+        {q: "What's the name for shell number?", a: "Principal quantum number (n)."},
+        {q: "What is the rule for 3d and 4s subshells?", a: "4s empties before 3d, but 3d is filled before 4s."},
+        {q: "Define an atomic orbital.", a: "A region around the nucleus that can hold up to 2 electrons with opposite spins."},
+        {q: "How many electrons are shared in single, double and triple bonds?", a: "Single=2, double=4, triple=6."},
+        {q: "Name the shape of an s and p orbital.", a: "s=spherical, p=dumbbell."},
+        {q: "What might be considered to be unusual about boron in compounds like BF3?", a: "It only has 6 electrons around it (3 bonds) so doesn't achieve an octet."},
+        {q: "Write out the order of filling of orbitals up to 4p6.", a: "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6"},
+        {q: "Name the two transition metal elements with anomalous electron configurations.", a: "Chromium [Ar]3d5 4s1, Copper [Ar]3d10 4s1"}
+
+      ],
+      "2.2.2 Bonding and Structure": [
+        {q: "What does the magnitute of 'average bond enthalpy' signify?", a: "Bond strength (higher=stronger)"},
+        {q: "Why do ionic compounds conduct electricity when molten or aqueous?", a: "The ions are mobile, so can move and carry charge."},
+        {q: "Metals bonded with non-metals have what form of bonding?", a: "Ionic"},
+        {q: "In which type of covalent bond does one atom donate both electrons to the shared pair?", a: "Dative/coordinate (covalent) bonds."},
+        {q: "Explain how the dative covalent bond forms between ammonia and H+ to make an ammonium ion.", a: "N atom donates its lone pair to the empty s orbital on H."},
+        {q: "Define metallic bonding", a: "Electrostatic attraction between cations and delocalised eletrons."},
+        {q: "What structures do ionic compounds have?", a: "Giant ionic lattice."},
+        {q: "Explain why ionic compounds have high melting and boiling points", a: "Strong electrostatic attraction between oppositely charged ions requires lots of energy to overcome."},
+        {q: "Define an ionic bond and why they're formed.", a: "Strong electrostatic attraction between positive and negative ions, form due to a large difference in electronegativity between elements."},
+        {q: "Define covalent bonding.", a: "Strong electrostatic attraction between a shared pair of electrons and the nuclei."},
+        {q: "Why do ionic compounds not conduct electricity when solid?", a: "Ions are fixed in lattice so can't carry a charge."},
+        {q: "How does ionic charge affect strength of an ionic bond?", a: "Higher charge= stronger bonding."},
+        {q: "Why are ionic compounds generally soluble in water?", a: "Water molecules are polar and surround the ions in solution."},
+        {q: "Explain how london forces arise between molecules.", a: "Electrons move randomly around molecule; an instantaneous dipole forms in one molecule; induces a dipole in neighbouring molecule; molecules attracted."},
+        {q: "Which theory explains the shapes of molecules?", a: "Electron pair repulsion theory."},
+        {q: "Explain why the b.p's of noble gases increase down the groups.", a: "The atoms have more electrons, so greater induced dipole-dipole interactions, so stronger london forces."},
+        {q: "How does repulsion between lone pairs compare with repuslion between bonded pairs of electrons?", a: "Lone pair repulsion is greater than bond pair repulsion."},
+        {q: "3 bond pairs and 1 lone pair- what is the shape and bond angle?", a: "Pyramidal, 107 deg."},
+        {q: "Define electronegativity.", a: "Ability of an atom to attract electrons in a covalent bond."},
+        {q: "How can you indicate the dipole present in a molecule?", a: "Drawing δ+ and δ- to the species corresponding partial charges."},
+        {q: "Explain why H2O has a much higher boiling point than H2S.", a: "H2O molecules have strong hydrogen bonds and london forces; H2S only have london forces, so more E required to overcome forces in H2O"},
+        {q: "Hydrogen bonding to which atoms can result in hydrogen bonding?", a: "O, N, or F (the most electronegative elements)."},
+        {q: "What are the general trends in electronegativity across the periodic table?", a: "Increase across period, decrease down a group."},
+        {q: "Explain why H2O and CO2 both have polar bonds, but only H2O is a polar molecule overall", a: "CO2 is linear, so opposing dipoles cancel out; H2O is non-linear so dipoles don't cancel out."},
+        {q: "What's required for permanent dipole-dipole forces?", a: "Molecules with permanent dipoles (significant difference in electronegativity between atoms) (polar molecules)."},
+        {q: "Order the 3 intermolecular forces in increasing strength.", a: "induced dipole-dipole forces, permanent dipole-dipole forces, hydrogen bonding."},
+        {q: "Describe a hydrogen bond.", a: "Attraction between partial positive H and lone pair in another molecule."},
+        {q: "3 bond pairs, 0 lone pairs- what's the shape and bond angle?", a: "Trigonal planar, 120 deg."},
+        {q: "6 bond pairs, 0 lone pairs- what's the shape and bond angle?", a: "Octahedral, 90 deg."},
+        {q: "Explain why ice is less dense than water.", a: "Hydrogen bonds hold H2O molecules apart in an open lattice in ice."},
+        {q: "2 bond pairs, 2 lone pairs- what's the shape and bond angle?", a: "Non-linear, 104.5 deg."},
+        {q: "Which scale is used to measure electronegativity?", a: "Pauling scale."},
+        {q: "4 bond pairs, 0 lone pairs- what's the shape and bond angle?", a: "Tetrahedral, 109.5"},
+        {q: "In 3D drawings of molecules, what do the lines mean?", a: "Dashed= pointing away; wedged= pointing towards, 1 line= in line with surface."}
+    ],
+        }, "Module 3": {
+      "3.1.1 Periodicity": [
+        { q: "What is ionization energy?", a: "The energy required to remove one mole of electrons from one mole of gaseous atoms." },
+        { q: "Describe the general trend of first ionization energy across a period.", a: "Increases."},
+        { q: "Why does ionization energy increase across a period?", a: "Increased nuclear charge and smaller atomic radius make it harder to remove electrons." },
+        { q: "Why do giant covalent substances generally not conduct electricity?", a: "They have no mobile charge carriers (ions or e-). Except graphite/graphene."},
+        { q: "Explain the trend in atomic radius across a period.", a: "Atomic radius decreases due to increased nuclear charge pulling electrons closer." },
+        { q: "What is the trend in electronegativity across a period?", a: "Electronegativity increases as the atomic radius decreases- stronger nuclear attraction." },
+        { q: "Why does the first ionisation energy decrease down a group?", a: "Electron shells are added, increasing the atomic radius and increasing shielding." },
+        { q: "Write the equation for first ionization energy of Na", a: "Na (g) -> Na+(g) + e- (g state symbols required)."},
+        { q: "Why do substances with giant covalent lattices have high melting & boiling points?", a: "Covalent bonds are strong & require a lot of energy to overcome."},
+        { q: "Why is carbon a p-block element.", a: "Its valence (highest energy) electron is in the p sub-shell."},
+        { q: "Write an equation for third ionization energy of Fe.", a: "Fe2+(g) -> Fe3+(g) + e-"},
+        { q: "The elements in the periodic table are arranged by increasing...", a: "Atomic number or proton number (Z)."},
+        { q: "Why does first ionization energy decrease from N to O", a: "Repulsion between electron pair in 2p orbital (2p4)."},
+        { q: "How can you tell from a graph of successive ionization energies, which group an atom is in?", a: "Determine the group number by counting how many electrons are removed before a large jump in ionization energy."},
+        { q: "Why does first IE decrease from Be to B?", a: "2p orbital of B is higher in energy than 2s in Be."},
+        { q: "Why does first IE decrease from N to O?", a: "electrons in O are paired in an orbital and experience repulsion."},
+        { q: "Explain why metals conduct electricity when solid.", a: "Delocalised electrons are mobile and can carry charge."},
+        { q: "Why are giant covalent substances insoluble in all solvents.", a: "Covalent bonds are strong and require a lot of energy to overcome."},
+        { q: "Explain why metals generally have a high MP and BP", a: "Strong electrostatic attraction between cation and delocalised electrons requires high energy to overcome."},
+        { q: "Why does first IE decrease from Mg to Al?", a: "3p orbital of Al is higher in energy than 3s in Mg."},
+        { q: "Why does first IE decrease from P to S", a: "Repulsion between paired electrons in S (3p4) means less energy required to lose electron."},
+        { q: "Name 3 factors which afect ionization energy.", a: "Atomic radius, nuclear charge, electron shielding."},
+        { q: "Define periodicity", a: "Patterns/trends across periods of the periodic table."},
+        { q: "Define giant covalent lattice structures.", a: "Structures with extended networks of atoms bonded by strong covalent bonds."},
+        { q: "What do elements in a group have in common?", a: "Same number of outer-shell electrons and similar chemical properties."},
+        { q: "Describe the trend in melting point across period 2.", a: "Increase through Li, Be, B, C (giant), then sharp drop to N, O, F, Ne (simple)."}
+      ],
+      "3.1.2&3 Group 2 and Group 7": [
+        { q: "What happens when Group 2 elements react with water?", a: "They form metal hydroxides and hydrogen gas." },
+        { q: "Describe the trend in reactivity of Group 7 elements.", a: "Reactivity decreases down the group as atomic radius increases." },
+        { q: "What is the general trend in boiling points down Group 7?", a: "Boiling points increase down the group due to stronger london forces (more electrons)." },
+        { q: "What is the formula for magnesium hydroxide?", a: "Mg(OH)₂" },
+        { q: "Explain the trend in solubility of Group 2 hydroxides.", a: "Solubility increases down the group. metal cation radius increases." },
+        { q: "Why does the ionisation energy decrease down a group?", a: "Electron shells are added, increasing the atomic radius and increasing shielding." },
+        { q: "Describe what happens when you add dilute and concentrated ammonia to silver halid ppts.", a: "AgCl soluble in dilute/conc. NH3, AgBr soluble only in conc. NH3, AgI not soluble in either."},
+        { q: "Explain why halogens are oxidising agents.", a: "They gain electrons (reduced) taking electrons from other species."},
+        { q: "Which of the other halogens can bromine displace.", a: "Only iodide."},
+        { q: "What salt is formed from barium reacting with nitric acid.", a: "Barium nitrate - Ba(NO3)2"},
+        { q: "Name a benefit of using chlorine in water treatment.", a: "Kills bacteria/microorganisms."},
+        { q: "What are the colours of Cl2, Br2 and I2 solutions in organic solvents?", a: "Pale green, orange, violet."},
+        { q: "Name the test and positive result for sulfate ions.", a: "Add aq. barium nitrate; see white ppt."},
+        { q: "What is the outer shell electron configuration of group 2 metals?", a: "s2."},
+        { q: "What is the molecular form of all halogens?", a: "Diatomic molecules."},
+        { q: "How does the pH of a Group 2 hydroxide solution change down the group?", a: "Increases- more basic."},
+        { q: "What are the products when chlorine reacts with water?", a: "HClO and HCl (disproportionation reaction)."},
+        { q: "Name the test and positive result for carbonate ions.", a: "React with dilute nitric acid; see effervescence."},
+        { q: "What is the trend in reactivity down Group 2 and explain why?", a: "Increases down the group; atomic radius increases, shielding increases, nuclear attraction decreases."},
+        { q: "Why are magnesium hydroxide and calcium carbonate used in antacids?", a: "They neutralise stomach acid."},
+        { q: "Identify the test and positive result for ammonium ions.", a: "Add NaOH, warm, test fumes with red litmus paper (turns blue)."},
+        { q: "What are the colours of Cl2, Br2 and I2 solutions in water?", a: "Pale green, orange, brown."},
+        { q: "Name 2 risks of using chlorine in water treatment.", a: "Chlorine is toxic. Can react with organic compounds in water to make carcinogenic chloroalkanes."},
+        { q: "What is NaClO?", a: "Sodium chlorate(I) is bleach."},
+        { q: "What are the products when Cl2 reacts with cold, dilute NaOH?", a: "NaClO, NaCl, H2O (disproportionation reaction)."},
+        { q: "Define disproportionation.", a: "When the same element is both oxidised and reduced at the same time in a reaction."},
+        { q: "Identify the test for halide ions and positive results.", a: "Add silver nitrate; Cl forms white ppt., Br forms cream ppt., I forms yellow ppt."},
+        { q: "Name a use of calcium hydroxide.", a: "Neutralising acidic soil."},
+        { q: "What is the correct sequence of tests for anions?", a: "Carbonate, then sulfate (CO3^2- can react w/ Ba2+), then halides(ppt could interfere with results of other tests)."},
+        { q: "Explain why Group 2 metals are reducing agents.", a: "The elements lose electrons (oxidised), donating e- to other species."}
+
+      ],
+      "3.1.4 Qualitative Analysis": [
+        
+  { q: "What is the test for carbonate ions (CO₃²⁻)?", a: "Add dilute acid; bubbles of gas form and the gas turns limewater cloudy, indicating CO₂." },
+  { q: "What is the confirmatory test for carbon dioxide?", a: "Bubble the gas through limewater; it turns cloudy if CO₂ is present." },
+  { q: "What is the test for sulfate ions (SO₄²⁻)?", a: "Add dilute HCl followed by barium chloride solution; a white precipitate of BaSO₄ forms." },
+  { q: "Why is HCl added before barium chloride in the sulfate test?", a: "To remove carbonate ions which could also form a white precipitate." },
+  { q: "What is the test for halide ions (Cl⁻, Br⁻, I⁻)?", a: "Add dilute nitric acid, then silver nitrate solution; observe precipitate colour." },
+  { q: "What precipitate forms with chloride ions and silver nitrate?", a: "White precipitate of silver chloride." },
+  { q: "What precipitate forms with bromide ions and silver nitrate?", a: "Cream precipitate of silver bromide." },
+  { q: "What precipitate forms with iodide ions and silver nitrate?", a: "Yellow precipitate of silver iodide." },
+  { q: "How do halide precipitates behave in ammonia?", a: "AgCl dissolves in dilute NH₃; AgBr dissolves in concentrated NH₃; AgI is insoluble." },
+  { q: "What is the test for ammonium ions (NH₄⁺)?", a: "Warm with aqueous sodium hydroxide; ammonia gas is released, turning damp red litmus paper blue." },
+  { q: "What is a positive result for ammonium ions?", a: "Pungent smell of ammonia and red litmus paper turning blue." },
+  { q: "Why is NaOH used in the test for ammonium ions?", a: "It reacts with NH₄⁺ to release NH₃ gas." },
+  { q: "What order should the anion tests be done in?", a: "Carbonate → Sulfate → Halide to avoid false positives from precipitates." },
+  { q: "What is the purpose of qualitative analysis?", a: "To identify ions or functional groups in a substance through characteristic tests." },
+  { q: "What gas turns limewater cloudy?", a: "Carbon dioxide." },
+  { q: "What test is used to identify a carboxylic acid?", a: "Add a carbonate (Na2CO3); effervescence and CO₂ confirm the presence of –COOH group." },
+  { q: "What is the test for alkenes?", a: "Add bromine water; it decolourises if a C=C bond is present." },
+  { q: "How do you test for phenols?", a: "Add iron(III) chloride solution; a purple complex indicates phenol. Or: acidic so universal indicator paper turns orange/red, but no reaction with Na2CO3." },
+  { q: "What colour does phenol turn FeCl₃ solution?", a: "Purple." },
+  { q: "Why is it important to follow a sequence in qualitative testing?", a: "To avoid misleading results due to formation of interfering precipitates." }
+
+      ],
+
+      "3.2.1 Energy": [
+      { q: "What is enthalpy change?", a: "The heat energy change at constant pressure." },
+      { q: "What does a negative enthalpy change indicate?", a: "The reaction is exothermic." },
+      { q: "What is Hess's Law?", a: "The total enthalpy change of a reaction is independent of the route taken." },
+      { q: "How does temperature affect the rate of reaction?", a: "Increasing temperature increases the rate by providing more energy for collisions." },
+      { q: "What is activation energy?", a: "The minimum energy required for a reaction to occur." },
+      { q: "What is a catalyst?", a: "A substance that provides an alternate reaction pathway with a lower activation energy."},
+      { q: "What is the standard enthalpy of formation?", a: "The enthalpy change when one mole of a compound is formed from its elements in their standard states." },
+      { q: "What is the standard enthalpy of combustion?", a: "The enthalpy change when one mole of a substance reacts completely with oxygen under standard conditions." },
+      { q: "What is the bond dissociation enthalpy?", a: "The enthalpy change required to break one mole of a particular bond in a molecule in the gas phase." },
+      { q: "How do you calculate the enthalpy change of a reaction using bond enthalpies?", a: "ΔH = Σ(reactants' bond enthalpies) - Σ(products' bond enthalpies)." },
+      { q: "What is the relationship between enthalpy change and spontaneity?", a: "A negative enthalpy change (exothermic) favors spontaneity, but spontaneity also depends on entropy." },
+      { q: "What is entropy?", a: "A measure of the disorder or randomness of a system." },
+      { q: "What is the Gibbs free energy equation?", a: "ΔG = ΔH - TΔS." },
+      { q: "How does a catalyst affect the enthalpy change of a reaction?", a: "A catalyst lowers the activation energy but does not affect the enthalpy change." },
+      { q: "What is a reversible reaction?", a: "A reaction where the products can react to form the original reactants under certain conditions." },
+      { q: "What is the difference between the enthalpy of formation and enthalpy of combustion?", a: "The enthalpy of formation refers to the formation of one mole of a compound, while the enthalpy of combustion refers to the complete burning of one mole of a substance." },
+      { q: "What does it mean if the enthalpy change is positive?", a: "The reaction is endothermic, absorbing heat from the surroundings." },
+      { q: "What is a calorimeter used for?", a: "A calorimeter is used to measure the heat energy changes during a chemical reaction." },
+      { q: "What is the enthalpy change for the dissolution of an ionic solid in water?", a: "It is the sum of the lattice enthalpy (energy required to separate the ions) and the hydration enthalpy (energy released when ions are surrounded by water molecules)." },
+      { q: "What is the significance of the enthalpy of vaporization?", a: "It is the amount of energy required to change one mole of a substance from liquid to gas at constant temperature." },
+      { q: "How do you calculate the enthalpy change of a reaction from experimental data?", a: "Use q = mcΔT to calculate heat absorbed or released, then divide by 1000 to convert to kJ, then divide by moles to find the enthalpy change." },
+      { q: "What is a fuel's enthalpy of combustion?", a: "The energy released when one mole of a fuel is completely combusted in excess oxygen." },
+      { q: "What is the relationship between enthalpy change and temperature?", a: "Enthalpy change is dependent on temperature, so measurements are taken under standard conditions to ensure consistency." },
+      { q: "What is the standard entropy change of a reaction?", a: "The entropy change when a reaction occurs under standard conditions (298 K, 1 atm, 1 mol dm^-3 concentration)." },
+      { q: "What is the effect of a catalyst on the Gibbs free energy?", a: "A catalyst does not affect the Gibbs free energy; it only lowers the activation energy." },
+      { q: "What does a positive value for ΔG indicate?", a: "The reaction is non-spontaneous under standard conditions." },
+      { q: "How does the number of moles of reactants and products affect entropy?", a: "An increase in the number of moles of gas in a reaction typically leads to an increase in entropy." },
+      { q: "What is meant by standard conditions for enthalpy measurements?", a: "Standard conditions are 298 K (25°C), 1 atm pressure, and 1 mol dm^-3 concentration for solutions." },
+      { q: "How is the enthalpy change for a reaction related to the heat capacity of the solution?", a: "Enthalpy change can be calculated by measuring the temperature change in a known volume of solution and using q = mcΔT." },
+      { q: "What does it mean if a reaction is exothermic?", a: "The reaction releases heat to the surroundings and has a negative enthalpy change." },
+      { q: "What is the enthalpy change of neutralization?", a: "The enthalpy change when one mole of an acid reacts with one mole of an alkali to form water under standard conditions." }
+      ],
+      "3.2.2 Rates of Reaction": [
+        
+  { q: "What is the rate equation?", a: "An equation that links the rate of a reaction with the concentration of reactants." },
+  { q: "Define rate of reaction.", a: "The change in concentration of a reactant or product per unit time." },
+  { q: "What is the overall order of a reaction?", a: "The sum of the powers of the concentrations of the reactants in the rate equation." },
+  { q: "What is the order of reaction with respect to a reactant?", a: "The power to which the concentration of that reactant is raised in the rate equation." },
+  { q: "What does a zero order reaction mean?", a: "The rate is independent of the concentration of that reactant." },
+  { q: "What does a first order reaction mean?", a: "The rate is directly proportional to the concentration of that reactant." },
+  { q: "What does a second order reaction mean?", a: "The rate is proportional to the square of the concentration of that reactant." },
+  { q: "How do you determine the order of reaction from experimental data?", a: "By observing how changes in concentration affect the rate of reaction." },
+  { q: "How is rate calculated from concentration-time graphs?", a: "By measuring the gradient (slope) of the graph at a point." },
+  { q: "What is the half-life of a reactant?", a: "The time taken for the concentration of a reactant to halve." },
+  { q: "What does constant half-life indicate about a reaction?", a: "It indicates that the reaction is first order with respect to that reactant." },
+  { q: "How can half-lives be used to determine order?", a: "Constant half-lives suggest first order; changing half-lives suggest zero or second order." },
+  { q: "What is the rate-determining step?", a: "The slowest step in a multi-step reaction mechanism that determines the overall rate." },
+  { q: "How does the rate equation relate to the rate-determining step?", a: "Only reactants involved in the rate-determining step appear in the rate equation." },
+  { q: "What is the Arrhenius equation?", a: "k = Ae^(-Ea/RT), relating the rate constant to activation energy and temperature." },
+  { q: "What does Ea represent in the Arrhenius equation?", a: "The activation energy of the reaction." },
+  { q: "What is the effect of temperature on the rate constant k?", a: "An increase in temperature increases the rate constant exponentially." },
+  { q: "How is the Arrhenius equation used graphically?", a: "Plotting ln k against 1/T gives a straight line with gradient -Ea/R and intercept ln A. y=mx+c. ln k=-Ea/R(1/T)+ln A." },
+  { q: "What is the role of the frequency factor A in the Arrhenius equation?", a: "It represents the frequency of collisions with correct orientation." },
+  { q: "Why is it important to understand reaction rates in industrial chemistry?", a: "To optimise conditions for maximum yield and efficiency." },
+   { q: "How can initial rates be measured experimentally?", a: "By measuring the rate at the very start of a reaction by drawing a tangent at t=0 and calculating the gradient in a concentration vs time graph." },
+  { q: "What is a common method for determining initial rates?", a: "The 'clock reaction' method, where the time taken to reach a visual endpoint is measured." },
+  { q: "What is a clock reaction?", a: "A reaction where the time to a visible change is used to approximate the initial rate." },
+  { q: "How do you calculate initial rate from a clock reaction?", a: "Initial rate ≈ 1 / time taken for the observable change." },
+  { q: "Why is it important to use initial rates?", a: "To avoid complications due to changes in concentration over time." },
+  { q: "How do you determine the rate-determining step from a rate equation?", a: "Only the species that appear in the rate equation are involved in the rate-determining step." },
+  { q: "What does the presence of a reactant in the rate equation suggest?", a: "That the reactant is involved in the rate-determining step." },
+  { q: "What does the absence of a reactant from the rate equation suggest?", a: "That the reactant is not involved in the rate-determining step or is involved in a fast step." },
+  { q: "How do experimental orders of reaction help propose a reaction mechanism?", a: "They indicate which species and how many molecules are involved in the slowest step." }
+],
+"3.2.3 Chemical Equilibrium": [
+
+  { q: "What is a dynamic equilibrium?", a: "A state in a closed system where the forward and reverse reactions occur at the same rate and concentrations remain constant." },
+  { q: "What condition must be met for dynamic equilibrium to exist?", a: "The system must be closed so that no substances enter or leave." },
+  { q: "What happens to concentrations at equilibrium?", a: "They remain constant because the rate of the forward reaction equals the rate of the reverse reaction." },
+  { q: "How does increasing the concentration of a reactant affect equilibrium?", a: "Equilibrium shifts to the right to oppose the change by forming more product." },
+  { q: "How does decreasing the concentration of a product affect equilibrium?", a: "Equilibrium shifts to the right to replace the product that was removed." },
+  { q: "How does increasing pressure affect gaseous equilibrium?", a: "Equilibrium shifts to the side with fewer moles of gas." },
+  { q: "How does decreasing pressure affect gaseous equilibrium?", a: "Equilibrium shifts to the side with more moles of gas." },
+  { q: "What happens to equilibrium if temperature is increased in an exothermic reaction?", a: "It shifts to the left (endothermic direction) to absorb the added heat." },
+  { q: "What happens to equilibrium if temperature is increased in an endothermic reaction?", a: "It shifts to the right to absorb the added heat." },
+  { q: "Does a catalyst change the position of equilibrium?", a: "No, it only increases the rate of both the forward and reverse reactions equally." },
+  { q: "How does a catalyst affect equilibrium rate?", a: "It allows equilibrium to be reached faster by lowering activation energy." },
+  { q: "What is the effect of a catalyst on equilibrium yield?", a: "No effect — only the rate is increased, not the yield." },
+  { q: "What is a technique used to investigate concentration effects on equilibrium?", a: "Change concentration of a reactant and observe color or pH changes if applicable." },
+  { q: "How can temperature effects on equilibrium be studied?", a: "Heat or cool the equilibrium mixture and observe changes such as color intensity." },
+  { q: "Why is equilibrium important in industry?", a: "It affects yield, and conditions must be optimised for maximum product formation." },
+  { q: "Why is a compromise needed between rate and equilibrium in industry?", a: "High yield may require low temperature if reaction exothermic, but that gives a slow rate; compromise balances both." },
+  { q: "What factors influence industrial conditions for equilibrium reactions?", a: "Rate, yield, safety, and cost." },
+  { q: "What is the Haber process compromise for temperature?", a: "Moderate temperature (~450°C) for acceptable rate and yield." },
+  { q: "What is the Haber process compromise for pressure?", a: "High pressure (200 atm) to increase yield, but limited by cost and safety." },
+  { q: "What is the equilibrium constant Kc?", a: "A value that expresses the ratio of product concentrations to reactant concentrations at equilibrium, each raised to the power of their coefficients." },
+  { q: "What is the general form of a Kc expression?", a: "Kc = [products]^n / [reactants]^m, where mreactants <-> nproducts" },
+  { q: "How is Kc calculated?", a: "By substituting equilibrium concentrations into the Kc expression." },
+  { q: "What are the units of Kc?", a: "They vary depending on the reaction; calculate using the powers in the expression." },
+  { q: "Does Kc change with concentration?", a: "No, Kc is only affected by temperature. When you change concentration or pressure, the system shifts position to restore equilibrium. The ratio [products]/[reactants] changes temporarily, but the system adjusts to bring it back to the same Kc." },
+  { q: "Does Kc change with pressure?", a: "No, only the position of equilibrium changes, not the value of Kc." },
+  { q: "Does Kc change with temperature?", a: "Yes, it changes depending on whether the reaction is exothermic or endothermic." },
+  { q: "What does a large Kc value mean?", a: "The equilibrium lies far to the right — products are favoured." },
+  { q: "What does a small Kc value mean?", a: "The equilibrium lies far to the left — reactants are favoured." },
+  { q: "How can the position of equilibrium be estimated from Kc?", a: "By comparing the magnitude of Kc; higher values 0 > mean more products than reactants at equilibrium." }
+
+        ],
+
+        }, "Module 4": {
+        "4.1.1 Basic Concepts of Organic Chemistry":[
+
+  // Naming and formulae
+  { q: "What is the IUPAC name for CH3CH2CH(CH3)CH2OH?", a: "2-methylbutan-1-ol" },
+  { q: "Name the first ten alkanes in order.", a: "Methane, ethane, propane, butane, pentane, hexane, heptane, octane, nonane, decane." },
+  { q: "What is the IUPAC name for CH3CH2COOH?", a: "Propanoic acid" },
+  { q: "What is the general formula of an alkane?", a: "CnH2n+2" },
+  { q: "What is the general formula of an alkene?", a: "CnH2n" },
+  { q: "What is the general formula of an alcohol?", a: "CnH2n+1OH" },
+  { q: "Give the structural formula of butane.", a: "CH3CH2CH2CH3" },
+  { q: "What is a displayed formula?", a: "Shows all atoms and bonds in a molecule, indicating spatial structure." },
+  { q: "What does a skeletal formula show?", a: "Carbon skeleton and functional groups, omitting hydrogen atoms bonded to carbon." },
+  { q: "In skeletal formula, what does each line represent?", a: "A bond between carbon atoms." },
+  { q: "What symbol is used to represent benzene in skeletal formula?", a: "A hexagon with a circle inside." },
+  { q: "What does the symbol R represent in organic chemistry?", a: "An alkyl group or other side chain not involved in the main reaction." },
+  { q: "What is meant by molecular formula?", a: "The actual number of atoms of each element in a molecule." },
+  { q: "What is meant by empirical formula?", a: "The simplest whole-number ratio of atoms in a compound." },
+  { q: "What is the skeletal formula of butan-1-ol?", a: "A four-carbon zigzag with an OH group on the first carbon. \/\_OH." },
+{
+  "q": "In IUPAC naming, how do you decide which groups use suffixes and which use prefixes, and what is the order if you have groups like methyl and hydroxyl?",
+  "a": "The **functional group with the highest priority** is given the **suffix** (e.g., -ol for hydroxyl), while other groups become **prefixes** (e.g., methyl-). When naming, first identify the longest chain including the highest priority group, number the chain to give the suffix group the lowest number, then list prefixes alphabetically with their position numbers before the suffix."
+},
+{
+  "q": "What is the priority order of functional groups when deciding suffix and prefix in IUPAC naming?",
+  "a": "Functional groups are prioritized so the highest priority group gets the suffix; others are prefixes. Typical priority order: carboxylic acid (-oic acid) > ester (-oate) > aldehyde (-al) > ketone (-one) > alcohol (-ol) > amine (-amine) > alkyl groups (prefixes like methyl-, ethyl-). For example, if a molecule has both -OH and -CHO, the aldehyde (-al) is the suffix and hydroxyl becomes a prefix (hydroxy-)."
+},
+
+  // Functional groups and types of compounds
+  { q: "Define a homologous series.", a: "A series of organic compounds with the same functional group and similar chemical properties, differing by CH2." },
+  { q: "What is a functional group?", a: "A specific group of atoms responsible for the characteristic reactions of a compound." },
+  { q: "What is the formula of an alkyl group?", a: "CnH2n+1" },
+  { q: "What is an aliphatic compound?", a: "A compound with carbon atoms in straight or branched chains, or non-aromatic rings." },
+  { q: "What is an alicyclic compound?", a: "An aliphatic compound with carbon atoms arranged in non-aromatic rings." },
+  { q: "What is an aromatic compound?", a: "A compound containing one or more benzene rings." },
+  { q: "What is meant by saturated compound?", a: "A compound containing only single carbon–carbon bonds." },
+  { q: "What is meant by unsaturated compound?", a: "A compound with multiple carbon–carbon bonds (C=C, C≡C, or aromatic rings)." },
+  { q: "Give an example of an unsaturated molecule.", a: "Ethene (C2H4)" },
+
+  // Predicting formulae
+  { q: "Use the general formula of alkanes to predict the formula of the pentane.", a: "C5H12" },
+  { q: "What is the molecular formula of 2-methylpropane?", a: "C4H10" },
+  { q: "What is the general formula of a carboxylic acid?", a: "CnH2nO2" },
+
+  // Isomerism
+  { q: "What is a structural isomer?", a: "Compounds with the same molecular formula but different structural arrangements." },
+  { q: "Give two types of structural isomerism.", a: "Chain isomerism and positional isomerism." },
+  { q: "How many structural isomers exist for C4H10?", a: "Two — butane and 2-methylpropane." },
+  { q: "What kind of isomerism does butan-1-ol and butan-2-ol show?", a: "Positional isomerism." },
+  { q: "Draw all structural isomers of C3H6O.", a: "Propanal, propanone, and possibly an enol form depending on context." },
+
+  // Bond fission and radicals
+  { q: "What is homolytic fission?", a: "Each atom receives one electron from a bond, forming two radicals." },
+  { q: "What is heterolytic fission?", a: "One atom receives both electrons from a bond, forming ions." },
+  { q: "What is a radical?", a: "A species with an unpaired electron." },
+  { q: "How are radicals represented?", a: "With a single dot, e.g., Cl•" },
+  { q: "What happens in radical substitution?", a: "Radicals react with molecules to form new radicals and products." },
+
+  // Reaction mechanisms
+  { q: "What does a curly arrow show in organic mechanisms?", a: "The movement of a pair of electrons." },
+  { q: "Where does a curly arrow start?", a: "From a bond, lone pair, or negative charge." },
+  { q: "What kind of fission is shown by a full curly arrow?", a: "Heterolytic fission." },
+  { q: "Why are dipoles shown in reaction mechanisms?", a: "To indicate the uneven distribution of electrons and predict electron movement." },
+  { q: "Why is the 'dot' important in radical mechanisms?", a: "It shows the presence of an unpaired electron, essential in radical reactions." },
+  { q: "What is initiation in radical substitution?", a: "The first step where radicals are formed, usually by UV light breaking bonds by homolytic fission." },
+  { q: "What is propagation in radical substitution?", a: "Radicals react to form new radicals and products, continuing the chain." },
+  { q: "What is termination in radical substitution?", a: "Two radicals combine to form a stable product, ending the reaction chain." },
+
+  // Application and communication
+  { q: "Why is systematic nomenclature important?", a: "It avoids ambiguity and allows chemists to clearly identify compounds." },
+  { q: "What role does IUPAC play in chemistry?", a: "It develops standardized naming rules and structures for organic compounds." },
+  { q: "Why is understanding skeletal formula useful?", a: "It simplifies complex molecules and highlights functional groups." }
+
+        ],
+"4.1.2 Alkanes":
+[
+  {
+    "q": "What type of bonds do alkanes contain?",
+    "a": "Alkanes contain only single C–C and C–H bonds, which are sigma (σ) bonds formed by direct overlap of orbitals."
+  },
+  {
+    "q": "Why can sigma bonds in alkanes freely rotate?",
+    "a": "Because sigma bonds involve head-on overlap of orbitals directly between atoms, allowing free rotation without breaking the bond."
+  },
+  {
+    "q": "What is the shape and bond angle around each carbon atom in alkanes, and why?",
+    "a": "Each carbon is tetrahedral with bond angles of approximately 109.5°, due to electron pair repulsion. 4 bond pairs repel."
+  },
+  {
+    "q": "How does the boiling point of alkanes change with chain length and branching?",
+    "a": "Boiling points increase with longer carbon chains due to more electrons so stronger London (induced dipole–dipole) forces; branching decreases boiling point by reducing surface area; fewer points of contact means weaker London forces."
+  },
+  {
+    "q": "Why are alkanes generally unreactive with many reagents?",
+    "a": "Because of the high bond enthalpy of C–C and C–H sigma bonds and their very low polarity, making them chemically stable."
+  },
+  {
+    "q": "What are the products of complete combustion of alkanes and why is incomplete combustion dangerous?",
+    "a": "Complete combustion produces CO2 and H2O. Incomplete combustion can produce carbon monoxide (CO), which is toxic as it binds irreversibly to haemoglobin."
+  },
+  {
+    "q": "Describe the radical substitution mechanism of alkanes with chlorine or bromine under UV light.",
+    "a": "It involves homolytic fission producing radicals (initiation), propagation steps where radicals react with alkanes forming new radicals and a product, and termination where radicals combine to end the chain reaction."
+  },
+  {
+    "q": "What is homolytic fission in the context of alkane radical substitution?",
+    "a": "Homolytic fission is the breaking of a covalent bond where each atom takes one electron, forming two radicals with unpaired electrons."
+  },
+  {
+    "q": "Why is radical substitution limited in synthesis of specific products?",
+    "a": "Because multiple substitution products can form due to further substitution and reactions at different positions in the carbon chain, leading to mixtures."
+  }
+],
+"4.1.3 Alkenes": [
+  
+  { "q": "What type of bonds are present in alkenes?", "a": "Alkenes contain a C=C double bond consisting of one σ-bond and one π-bond." },
+  { "q": "How is the π-bond in alkenes formed?", "a": "The π-bond forms by sideways overlap of adjacent p-orbitals above and below the plane of the bonded carbon atoms." },
+  { "q": "Why is rotation restricted around the C=C bond in alkenes?", "a": "The π-bond prevents free rotation because breaking it requires energy, fixing the spatial arrangement of groups." },
+  { "q": "What is the shape and bond angle around each carbon in the C=C bond?", "a": "Trigonal planar shape with bond angles of approximately 120°, due to electron pair repulsion." },
+  { "q": "Define stereoisomers.", "a": "Compounds with the same structural formula but different spatial arrangements of atoms." },
+  { "q": "What is E/Z isomerism?", "a": "A type of stereoisomerism caused by restricted rotation around the double bond and different groups attached to each carbon of the C=C bond." },
+  { "q": "What is cis-trans isomerism?", "a": "A special case of E/Z isomerism where two substituents on each carbon of the C=C bond are the same." },
+  { "q": "How do you assign E and Z configurations?", "a": "Using Cahn–Ingold–Prelog priority rules to rank substituents by atomic number; E = opposite sides, Z = same side." },
+  { "q": "What determines the number of possible E/Z isomers?", "a": "The presence of two different groups on each carbon of the double bond allows E/Z isomerism." },
+  { "q": "Why are alkenes more reactive than alkanes?", "a": "Because the π-bond has a lower bond enthalpy and is more easily broken than a σ-bond." },
+  { "q": "What products are formed when alkenes react with hydrogen?", "a": "Alkanes, via addition reactions using a catalyst like nickel." },
+  { "q": "How is bromine used to test for unsaturation in alkenes?", "a": "Bromine decolourizes from orange to colourless when added to alkenes due to addition across the double bond." },
+  { "q": "What happens when alkenes react with hydrogen halides?", "a": "They form haloalkanes by electrophilic addition of the hydrogen halide across the double bond." },
+  { "q": "What is electrophilic addition?", "a": "A mechanism where an electrophile (electron pair acceptor) attacks the electron-rich double bond, causing bond breaking and formation." },
+  { "q": "Describe the mechanism of electrophilic addition to alkenes.", "a": "The π-bond breaks heterolytically; an intermediate carbocation or halonium ion forms, followed by nucleophile attack." },
+  { "q": "What does Markownikoff’s rule state?", "a": "In addition of HX to unsymmetrical alkenes, the hydrogen attaches to the carbon with more hydrogens, producing the most stable carbocation." },
+  { "q": "What is addition polymerisation?", "a": "The reaction where many alkene monomers join by opening their double bonds to form a polymer chain." },
+  { "q": "How do you deduce the repeat unit of an addition polymer?", "a": "By showing the original alkene monomer units joined, removing the double bond and showing single bonds between carbons and continuation bonds on each end to show it's part of a longer chain." },
+  { "q": "What are sustainable ways to manage waste polymers?", "a": "Combustion for energy, using waste as organic feedstock, and removing toxic byproducts like HCl from halogenated plastics." },
+  { "q": "What are the environmental benefits of biodegradable and photodegradable polymers?", "a": "They reduce dependency on finite resources and help alleviate issues from persistent plastic waste disposal." }
+
+],
+"4.2.1 Alcohols": [
+
+  { "q": "Why are alcohols more soluble in water than alkanes?", "a": "Alcohols form hydrogen bonds with water due to the polar O–H bond, increasing solubility. Alkanes are non-polar and cannot form hydrogen bonds." },
+  { "q": "Why do alcohols have lower volatility than alkanes of similar Mr?", "a": "Alcohols form strong hydrogen bonds between molecules, requiring more energy to overcome intermolecular forces." },
+  { "q": "How do you classify alcohols as primary, secondary, or tertiary?", "a": "Primary: –OH attached to a C with 1 alkyl group (e.g. ethanol)\n\nSecondary: –OH attached to a C with 2 alkyl groups (e.g. propan-2-ol)\n\nTertiary: –OH attached to a C with 3 alkyl groups (e.g. 2-methylpropan-2-ol)" },
+  { "q": "Write the balanced equation for the complete combustion of ethanol.", "a": "C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O" },
+  { "q": "What are the products of complete alcohol combustion?", "a": "Carbon dioxide and water." },
+  { "q": "What is the oxidising agent used in alcohol oxidation reactions?", "a": "Acidified potassium dichromate(VI), K₂Cr₂O₇/H₂SO₄, represented as [O]." },
+  { "q": "What is observed when a primary alcohol is oxidised?", "a": "Orange solution turns green due to reduction of Cr₂O₇²⁻ to Cr³⁺." },
+  { "q": "Describe the oxidation of primary alcohols.", "a": "To aldehyde: Gentle heating with [O] and immediate distillation.\n\nTo carboxylic acid: Reflux with excess [O]." },
+  { "q": "What are the products of oxidising a secondary alcohol?", "a": "A ketone is formed under reflux with [O]." },
+  { "q": "What happens when a tertiary alcohol is heated with [O]?", "a": "No reaction; tertiary alcohols resist oxidation due to lack of a hydrogen on the carbon bearing the –OH." },
+  { "q": "Write the equation for oxidation of propan-1-ol to propanoic acid.", "a": "CH₃CH₂CH₂OH + 2[O] → CH₃CH₂COOH + H₂O" },
+  { "q": "How are alkenes formed from alcohols?", "a": "By heating alcohol with concentrated acid catalyst (H₃PO₄ or H₂SO₄) to eliminate H₂O." },
+  { "q": "What are the reagents and conditions for dehydration of alcohols?", "a": "Concentrated H₂SO₄ or H₃PO₄, heat under reflux." },
+  { "q": "What type of reaction is alcohol dehydration?", "a": "Elimination reaction." },
+  { "q": "How is a haloalkane formed from an alcohol?", "a": "By substitution with a halide ion (e.g. Br⁻) in the presence of strong acid (e.g. H₂SO₄)." },
+  { "q": "Reagents and conditions for converting an alcohol to a bromoalkane?", "a": "NaBr and concentrated H₂SO₄, heat under reflux." },
+  { "q": "Write the reaction for making bromoethane from ethanol.", "a": "C₂H₅OH + NaBr + H₂SO₄ → C₂H₅Br + NaHSO₄ + H₂O" },
+  { "q": "How would you prepare a carboxylic acid from a primary alcohol in the lab?", "a": "Reflux alcohol with excess acidified K₂Cr₂O₇, distill after reaction to purify." },
+  { "q": "How can you ensure formation of an aldehyde rather than a carboxylic acid?", "a": "Use limited oxidising agent and distill immediately to prevent further oxidation." },
+  { "q": "How can IR spectroscopy distinguish between an alcohol and a carboxylic acid?", "a": "Alcohols: Broad O–H stretch around 3200–3550 cm⁻¹\n\nCarboxylic acids: O–H stretch (broad at 2500–3500 cm⁻¹ ) + C=O stretch around 1700 cm⁻¹" }
+
+],
+"4.2.2 Haloalkanes": [
+  { "q": "What happens in the hydrolysis of haloalkanes using aqueous alkali?", "a": "The haloalkane undergoes nucleophilic substitution with OH⁻ to form an alcohol and a halide ion." },
+  { "q": "Write a general equation for the hydrolysis of a haloalkane with aqueous NaOH.", "a": "R–X + NaOH → R–OH + NaX (where X = halogen)" },
+  { "q": "What are the reagents and conditions for the hydrolysis of a haloalkane with aqueous alkali?", "a": "Reagents: aqueous NaOH or KOH; Conditions: heat under reflux." },
+  { "q": "What is observed when hydrolysis of a haloalkane occurs in the presence of AgNO₃ and ethanol?", "a": "A precipitate of the silver halide forms: white (Cl⁻), cream (Br⁻), or yellow (I⁻), indicating halide ion release." },
+  { "q": "Why is ethanol used in the hydrolysis of haloalkanes with AgNO₃?", "a": "Ethanol acts as a mutual solvent, allowing water and the haloalkane to mix." },
+  { "q": "What does the rate of precipitate formation tell us about the hydrolysis of haloalkanes?", "a": "Faster precipitate formation indicates a faster rate of hydrolysis and a weaker carbon–halogen bond." },
+  { "q": "Put these carbon–halogen bonds in order of increasing bond enthalpy: C–I, C–Cl, C–Br, C–F.", "a": "C–I < C–Br < C–Cl < C–F" },
+  { "q": "What is the trend in hydrolysis rate of haloalkanes and how is it explained?", "a": "Rate increases from C–Cl to C–I due to decreasing bond enthalpy — weaker bonds break more easily." },
+  { "q": "Define the term nucleophile.", "a": "A nucleophile is an electron pair donor." },
+  { "q": "Give three examples of nucleophiles.", "a": "OH⁻, NH₃, CN⁻, etc. (any molecule that can donate a lone pair)." },
+  { "q": "What type of mechanism occurs during hydrolysis of a primary haloalkane with aqueous OH⁻?", "a": "Nucleophilic substitution mechanism." },
+  { "q": "Describe the nucleophilic substitution mechanism for hydrolysis of a primary haloalkane.", "a": "1. Lone pair on OH⁻ attacks δ⁺ carbon bonded to halogen.\n2. C–X bond breaks heterolytically, halide ion leaves.\n3. Alcohol forms." },
+  { "q": "Write the equation for the initiation step in the breakdown of CFCs by UV radiation.", "a": "CF₂Cl₂ → CF₂Cl• + Cl•" },
+  { "q": "Write the propagation steps for ozone breakdown by a chlorine radical.", "a": "1) Cl• + O₃ → ClO• + O₂\ 2) nClO• + O → Cl• + O₂" },
+  { "q": "What is the overall effect of chlorine radicals on ozone?", "a": "They catalyse the breakdown of ozone to oxygen: O₃ + O → 2O₂." },
+  { "q": "Give an example of another radical that catalyses ozone depletion.", "a": "NO• (nitrogen monoxide radical)" },
+  { "q": "Why is the use of CFCs now restricted?", "a": "Scientific evidence showed CFCs deplete the ozone layer, leading to increased UV radiation; this led to international agreements like the Montreal Protocol." },
+  { "q": "What role did scientific evidence play in banning CFCs?", "a": "Peer-reviewed evidence of ozone depletion caused by CFCs led to international policy changes and environmental legislation." }
+
+],
+"4.2.3 Organic Synthesis": [
+  { "q": "What is Quickfit apparatus used for?", "a": "Quickfit apparatus is used for setting up safe and secure reflux and distillation systems in organic preparation." },
+  { "q": "When is heating under reflux used?", "a": "Reflux is used when heating a reaction mixture for an extended time to ensure complete reaction without loss of volatile substances." },
+  { "q": "When is distillation used in organic synthesis?", "a": "Distillation is used to separate a liquid product from a reaction mixture based on boiling points." },
+  { "q": "How is a separating funnel used during purification?", "a": "It separates the immiscible aqueous and organic layers; the denser layer is removed by opening the tap." },
+  { "q": "Why is an anhydrous salt like MgSO₄ or CaCl₂ used during purification?", "a": "To remove residual water from the organic layer by acting as a drying agent." },
+  { "q": "How do you know when an organic liquid is dry after adding a drying agent?", "a": "The organic liquid turns clear, and the solid drying agent remains free-flowing (stops clumping)." },
+  { "q": "Why is redistillation sometimes carried out?", "a": "To further purify the organic liquid by separating it from by-products or impurities with similar boiling points." },
+  { "q": "What types of compounds are identified using functional group analysis?", "a": "Alcohols, alkenes, haloalkanes, aldehydes, ketones, carboxylic acids, esters, and others encountered in Module 4." },
+  { "q": "Why is it important to identify individual functional groups in a molecule?", "a": "To predict its physical properties, chemical reactivity, and possible reaction pathways." },
+  { "q": "How do you predict properties and reactions of an organic molecule?", "a": "By recognising functional groups and applying known reaction mechanisms and conditions." },
+  { "q": "What is a synthetic route?", "a": "A series of chemical steps used to convert one compound into another, often involving functional group interconversions." },
+  { "q": "What is a two-stage synthetic route?", "a": "A method involving two chemical reactions to convert a starting material to a desired product via an intermediate compound." },
+  { "q": "Give an example of a two-step synthesis from an alkene to an alcohol.", "a": "Step 1: Alkene → Haloalkane (via electrophilic addition with HBr)\nStep 2: Haloalkane → Alcohol (via hydrolysis with aqueous OH⁻)" },
+  { "q": "Suggest a two-step synthesis from a primary alcohol to a carboxylic acid.", "a": "Step 1: Primary alcohol → Aldehyde (distillation with [O])\nStep 2: Aldehyde → Carboxylic acid (reflux with excess [O])" },
+  { "q": "What extra information might be given in a synthetic route question?", "a": "Reagents, conditions, or reaction types beyond the spec to test your application of organic transformations." },
+  { "q": "What is the importance of synthetic routes in organic chemistry?", "a": "They allow the design and optimisation of pathways to produce useful compounds from available materials." }
+],
+"4.2.4 Analytical Techniques": [
+  { "q": "What does infrared (IR) radiation do to covalent bonds?", "a": "Infrared radiation causes covalent bonds to vibrate more and absorb energy." },
+
+  { "q": "Which atmospheric gases absorb IR radiation and what bonds do they contain?", "a": "CO₂ (C=O), H₂O (O–H), and CH₄ (C–H) absorb IR radiation due to their polar bonds." },
+
+  { "q": "How is IR absorption by atmospheric gases linked to global warming?", "a": "These gases trap heat by absorbing IR radiation, leading to the greenhouse effect and global warming." },
+
+  { "q": "Which IR absorption peak identifies an alcohol?", "a": "A broad O–H stretch peak around 3200–3550 cm⁻¹." },
+
+  { "q": "Which IR absorption peak identifies an aldehyde or ketone?", "a": "A sharp C=O stretch peak around 1700 cm⁻¹." },
+
+  { "q": "How is a carboxylic acid identified in an IR spectrum?", "a": "By a sharp C=O peak near 1700 cm⁻¹ and a very broad O–H stretch between 2500–3300 cm⁻¹." },
+
+  { "q": "Where does the IR peak for C–H bond absorption appear?", "a": "Approximately at 3000 cm⁻¹, common to most organic compounds." },
+
+  { "q": "How is IR spectroscopy used in air pollution monitoring?", "a": "To detect gases like CO and NO by identifying their specific IR absorption patterns." },
+
+  { "q": "How is IR spectroscopy used in breathalysers?", "a": "To detect ethanol in the breath via the C-H bonds (not O-H as it overlaps with water vapour in the breath)." },
+
+  { "q": "What is the molecular ion peak in a mass spectrum?", "a": "The peak corresponding to the molecular mass of the compound (M⁺)." },
+
+  { "q": "How is the molecular mass determined using mass spectrometry?", "a": "By identifying the molecular ion peak (M⁺) which represents the intact molecule with a +1 charge." },
+
+  { "q": "What is the M+1 peak in a mass spectrum?", "a": "A small peak due to the presence of carbon-13 isotopes in the molecule." },
+
+  { "q": "What do fragmentation peaks in a mass spectrum indicate?", "a": "They represent smaller ions formed from the breakdown of the molecular ion, helping to deduce structure." },
+
+  { "q": "How can fragment ions help identify structures in a compound?", "a": "By matching fragment peaks with known molecular pieces to deduce parts of the original structure." },
+
+  { "q": "What techniques are combined to deduce the structure of an organic compound?", "a": "Elemental analysis, IR spectroscopy, and mass spectrometry are used together for structural determination." },
+
+  { "q": "What information does elemental analysis provide in structural determination?", "a": "The empirical formula based on the percentage composition of elements in the compound." }
+],
+
+
+
+
+        }
+
+      },
+      "OCR B (In progress)": {
+        "Foundations in Chemistry": {
+          "Atomic Structure": [
+            { q: "What is an isotope?", a: "Atoms of the same element with different numbers of neutrons." }
+          ]
+        }
+      }
+    };
+
+    let currentFlashcards = [], currentIndex = 0, answerVisible = false;
+
+    function createChemistryModules() {
+      for (const board in chemistryTopics) {
+        const boardContainer = document.getElementById(board === "OCR A" ? "ocrA" : "ocrB");
+        for (const module in chemistryTopics[board]) {
+          const modBtn = document.createElement("button");
+          modBtn.className = "module-button";
+          modBtn.textContent = module;
+          modBtn.onclick = () => toggleSubtopics(`${board}-${module}`);
+
+          const subDiv = document.createElement("div");
+          subDiv.className = "subtopics";
+          subDiv.id = `${board}-${module}`;
+
+          for (const sub in chemistryTopics[board][module]) {
+            const subBtn = document.createElement("button");
+            subBtn.textContent = sub;
+            subBtn.onclick = () => loadFlashcards(board, module, sub);
+            subDiv.appendChild(subBtn);
+          }
+
+          boardContainer.appendChild(modBtn);
+          boardContainer.appendChild(subDiv);
+        }
+      }
+    }
+
+    function toggleSubtopics(id) {
+      const div = document.getElementById(id);
+      const isActive = div.classList.contains("active");
+      if (isActive) {
+        div.classList.remove("active");
+      } else {
+        div.classList.add("active");
+      }
+    }
+
+    function loadFlashcards(board, module, subtopic) {
+      currentFlashcards = chemistryTopics[board][module][subtopic];
+      currentIndex = 0;
+      answerVisible = false;
+
+      document.getElementById("flashcardDisplay").style.display = "flex";
+      document.getElementById("topicTitle").textContent = `${board} > ${module} > ${subtopic}`;
+      showFlashcard();
+    }
+
+    function showFlashcard() {
+      const current = currentFlashcards[currentIndex];
+      document.getElementById("questionText").textContent = current.q;
+      document.getElementById("answerText").textContent = current.a;
+      document.getElementById("answerText").style.display = answerVisible ? "block" : "none";
+      document.getElementById("showAnswerBtn").textContent = answerVisible ? "Hide Answer" : "Show Answer";
+    }
+
+    function toggleAnswer() {
+      answerVisible = !answerVisible;
+      showFlashcard();
+    }
+
+    function nextFlashcard() {
+      if (currentFlashcards.length > 0) {
+        currentIndex = (currentIndex + 1) % currentFlashcards.length;
+        answerVisible = false;
+        showFlashcard();
+      }
+    }
+
+    function prevFlashcard() {
+      if (currentFlashcards.length > 0) {
+        currentIndex = (currentIndex - 1 + currentFlashcards.length) % currentFlashcards.length;
+        answerVisible = false;
+        showFlashcard();
+      }
+    }
+
+    function closeFlashcards() {
+      document.getElementById("flashcardDisplay").style.display = "none";
+      currentFlashcards = [];
+      currentIndex = 0;
+      answerVisible = false;
+    }
+
+    createChemistryModules();
+  </script>
+</body>
+</html>
