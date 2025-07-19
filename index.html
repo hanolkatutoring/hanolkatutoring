@@ -255,14 +255,75 @@
     }
 
     @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+      }
+      .dropdown {
+        width: 100%;
+      }
+      header {
+        padding: 2rem 0.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      section {
+        padding: 2rem 0.5rem;
+      }
       .grid-section {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 1.5rem;
       }
-
       .card {
         flex: 1 1 100%;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      .image-block img {
+        max-width: 100%;
+        height: auto;
+      }
+      .modal-content {
+        padding: 1rem 0.5rem !important;
+        max-width: 95vw !important;
+      }
+      footer {
+        padding: 1rem 0.5rem;
+        font-size: 0.95rem;
+      }
+      footer input[type="email"] {
+        width: 120px;
+        font-size: 0.95rem;
+      }
+      footer button[type="submit"] {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+      .modal-content {
+        padding: 0.5rem !important;
+      }
+      .section-link {
+        font-size: 1rem;
+      }
+      .image-block {
+        aspect-ratio: unset;
+        min-height: 120px;
       }
     }
   </style>
@@ -291,7 +352,8 @@
     <div class="fade-in">
       <img src="favicon.png" alt="Hanolka Logo" style="width: 80px; height: auto; margin-bottom: 1rem;">
       <h1>Hanolka Tutoring</h1>
-      <p>Thoughtfully tailored support for students worldwide — from GCSE & A-Level to beyond the UK specification.</p>
+      <p>Thoughtfully tailored support for students worldwide — from GCSE & A-Level to beyond the UK specification.</p><br>
+      <p>Our website is currently partially unresponsive on mobile, we are trying hard to fix this. To ensure the best possible experience, please use landscape mode on your mobile device.</p>
     </div>
   </header>
 
