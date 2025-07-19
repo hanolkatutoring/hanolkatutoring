@@ -233,6 +233,79 @@
       font-size: 0.9rem;
       margin-top: auto;
     }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+      }
+      .dropdown {
+        width: 100%;
+      }
+      header {
+        padding: 2rem 0.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      section {
+        padding: 2rem 0.5rem;
+      }
+      .grid-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 1.5rem;
+      }
+      .image-block img {
+        max-width: 100%;
+        height: auto;
+      }
+      .modal-content {
+        padding: 1rem 0.5rem !important;
+        max-width: 95vw !important;
+      }
+      footer {
+        padding: 1rem 0.5rem;
+        font-size: 0.95rem;
+      }
+      footer input[type="email"] {
+        width: 120px;
+        font-size: 0.95rem;
+      }
+      footer button[type="submit"] {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+      .modal-content {
+        padding: 0.5rem !important;
+      }
+      .section-link {
+        font-size: 1rem;
+      }
+      .image-block {
+        aspect-ratio: unset;
+        min-height: 120px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -745,7 +818,7 @@
   { "q": "What are the products of complete alcohol combustion?", "a": "Carbon dioxide and water." },
   { "q": "What is the oxidising agent used in alcohol oxidation reactions?", "a": "Acidified potassium dichromate(VI), K₂Cr₂O₇/H₂SO₄, represented as [O]." },
   { "q": "What is observed when a primary alcohol is oxidised?", "a": "Orange solution turns green due to reduction of Cr₂O₇²⁻ to Cr³⁺." },
-  { "q": "Describe the oxidation of primary alcohols.", "a": "To aldehyde: Gentle heating with [O] and immediate distillation.\n\nTo carboxylic acid: Reflux with excess [O]." },
+  { "q": "Describe the oxidation of primary alcohols.", a: "To aldehyde: Gentle heating with [O] and immediate distillation.\n\nTo carboxylic acid: Reflux with excess [O]." },
   { "q": "What are the products of oxidising a secondary alcohol?", "a": "A ketone is formed under reflux with [O]." },
   { "q": "What happens when a tertiary alcohol is heated with [O]?", "a": "No reaction; tertiary alcohols resist oxidation due to lack of a hydrogen on the carbon bearing the –OH." },
   { "q": "Write the equation for oxidation of propan-1-ol to propanoic acid.", "a": "CH₃CH₂CH₂OH + 2[O] → CH₃CH₂COOH + H₂O" },
@@ -866,7 +939,7 @@
           for (const sub in chemistryTopics[board][module]) {
             const subBtn = document.createElement("button");
             subBtn.textContent = sub;
-            subBtn.onclick = () => loadFlashcards(board, module, sub);
+            subBtn.onclick = () => loadFlashcards(board, module, subtopic);
             subDiv.appendChild(subBtn);
           }
 

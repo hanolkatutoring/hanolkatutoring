@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .profile-menu {
+      position: relative;
+    }
+
+    .profile-button {
+      background: none;
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      color: var(--deep-navy);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      min-width: 200px;
+    }
+
+    .profile-dropdown .xp-bar {
+      background-color: var(--cool-silver);
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .profile-dropdown .xp-progress {
+      height: 100%;
+      background-color: var(--accent-coral);
+    }
+
+    .profile-dropdown a {
+      color: var(--deep-navy);
+      text-decoration: none;
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+      }
+      .dropdown {
+        width: 100%;
+      }
+      header {
+        padding: 2rem 0.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      section {
+        padding: 2rem 0.5rem;
+      }
+      .grid-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 1.5rem;
+      }
+      .image-block img {
+        max-width: 100%;
+        height: auto;
+      }
+      .modal-content {
+        padding: 1rem 0.5rem !important;
+        max-width: 95vw !important;
+      }
+      footer {
+        padding: 1rem 0.5rem;
+        font-size: 0.95rem;
+      }
+      footer input[type="email"] {
+        width: 120px;
+        font-size: 0.95rem;
+      }
+      footer button[type="submit"] {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+      .modal-content {
+        padding: 0.5rem !important;
+      }
+      .section-link {
+        font-size: 1rem;
+      }
+      .image-block {
+        aspect-ratio: unset;
+        min-height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <button class="hamburger" id="hamburger">☰</button>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="find-a-tutor.html">Find a Tutor</a>
+      <a href="become-a-tutor.html">Become a Tutor</a>
+      <a href="resources.html">Resources</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div id="auth-section"></div>
+  </nav>
+
+  <header style="text-align: center; padding: 2rem;">
+    <div>
+      <img src="favicon.png" alt="Hanolka Logo" style="width: 80px; height: auto; margin-bottom: 1rem;">
+      <h1>Hanolka Tutoring</h1>
+      <p>Thoughtfully tailored support for students worldwide — from GCSE & A-Level to beyond the UK specification.</p>
+    </div>
+  </header>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    // TODO: Replace with your actual Supabase URL and anon key
+    const supabaseUrl = 'https://hekbaoeuknlzpelqbkmy.supabase.co'
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhla2Jhb2V1a25senBlbHFia215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2MjQ2NTksImV4cCI6MjA2NDIwMDY1OX0.eip0nBkXozALbCF3wr2TuKJCalBzn-6gP7Hw0cMWq2k'
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('show')
+    })
+
+    const authSection = document.getElementById('auth-section')
+
+    async function loadUserData() {
+      const { data: { user }, error } = await supabase.auth.getUser()
+
+      if (error || !user) {
+        authSection.innerHTML = `<a href="login.html" style="color: white; font-weight: 600;">Login</a>`
+        return
+      }
+
+      // Fetch XP from your table `user_xp` with user ID matching auth user id
+      const { data: xpData, error: xpError } = await supabase
+        .from('user_xp')
+  .upsert([
+    { user_id: user.id, xp_percent: 50 }
+  ])
+        .select('xp_percent')
+        .eq('user_id', user.id)
+        .single()
+        
+
+
+      if (xpError || !xpData || typeof xpData.xp_percent !== 'number') {
+        authSection.innerHTML = `<a href="login.html" style="color: white; font-weight: 600;">Login</a>`
+        return
+      }
+
+      authSection.innerHTML = `
+        <div class="profile-menu">
+          <button class="profile-button" id="profile-toggle">Profile ▼</button>
+          <div class="profile-dropdown" id="profile-dropdown">
+            <div class="xp-bar">
+              <div class="xp-progress" style="width: ${xpData.xp_percent}%;"></div>
+            </div>
+            <a href="#" id="logout-link">Log Out</a>
+          </div>
+        </div>
+      `
+
+      document.body.addEventListener('click', (e) => {
+        const toggle = document.getElementById('profile-toggle')
+        const dropdown = document.getElementById('profile-dropdown')
+        if (e.target === toggle) {
+          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block'
+        } else if (!dropdown.contains(e.target)) {
+          dropdown.style.display = 'none'
+        }
+      })
+
+      document.getElementById('logout-link').addEventListener('click', async (e) => {
+        e.preventDefault()
+        await supabase.auth.signOut()
+        location.reload()
+      })
+    }
+
+    loadUserData()
+  </script>
+</body>
+</html>

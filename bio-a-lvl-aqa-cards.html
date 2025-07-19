@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>Biology Flashcards | AQA A-Level | Hanolka Tutoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--pale-sky);
+      color: var(--deep-navy);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: var(--deep-navy);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex-grow: 1;
+    }
+
+    header {
+      background-color: var(--pale-sky);
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--accent-ink);
+    }
+
+    .flashcards {
+      display: none;
+      position: relative;
+      background-color: white;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      flex-direction: column;
+      justify-content: space-between;
+      height: 550px;
+      text-align: center;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--accent-ink);
+      font-weight: bold;
+    }
+
+    .flashcards h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--accent-coral);
+      margin-bottom: 1rem;
+    }
+
+    .flashcard-question {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--deep-navy);
+      font-weight: 600;
+    }
+
+    .flashcard-answer {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--accent-ink);
+      display: none;
+    }
+
+    .flashcard-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .flashcard-controls button {
+      padding: 0.5rem 1rem;
+      background-color: var(--accent-ink);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .flashcard-controls button:hover {
+      background-color: var(--accent-coral);
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .topic-button 
+      {
+      background-color: var(--cool-silver);
+      color: var(--deep-navy);
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .topic-button:hover {
+      background-color: var(--accent-ink);
+      color: white;
+    }
+
+    .subtopics {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtopics.active {
+      display: flex;
+    }
+
+    .subtopics button {
+      background-color: var(--accent-coral);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.2s;
+      text-align: center;
+    }
+
+    .subtopics button:hover {
+      background-color: var(--deep-navy);
+    }
+
+    footer {
+      background-color: var(--deep-navy);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+      }
+      .dropdown {
+        width: 100%;
+      }
+      header {
+        padding: 2rem 0.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      section {
+        padding: 2rem 0.5rem;
+      }
+      .grid-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+      .card {
+        flex: 1 1 100%;
+        margin-bottom: 1.5rem;
+      }
+      .image-block img {
+        max-width: 100%;
+        height: auto;
+      }
+      .modal-content {
+        padding: 1rem 0.5rem !important;
+        max-width: 95vw !important;
+      }
+      footer {
+        padding: 1rem 0.5rem;
+        font-size: 0.95rem;
+      }
+      footer input[type="email"] {
+        width: 120px;
+        font-size: 0.95rem;
+      }
+      footer button[type="submit"] {
+        font-size: 0.95rem;
+        padding: 0.5rem 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+      .modal-content {
+        padding: 0.5rem !important;
+      }
+      .section-link {
+        font-size: 1rem;
+      }
+      .image-block {
+        aspect-ratio: unset;
+        min-height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="find-a-tutor.html">Find a Tutor</a>
+    <a href="become-a-tutor.html">Become a Tutor</a>
+    <a href="resources.html">Resources</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <header>
+    <h1>AQA A-Level Biology Flashcards</h1>
+    <p>Select a subtopic to start reviewing flashcards</p>
+  </header>
+
+  <div id="flashcardDisplay" class="flashcards">
+    <button class="close-btn" onclick="closeFlashcards()">&times;</button>
+    <h3 id="topicTitle">Flashcards</h3>
+    <div class="flashcard-question" id="questionText">Click a subtopic to begin.</div>
+    <div class="flashcard-answer" id="answerText"></div>
+    <button onclick="toggleAnswer()" id="showAnswerBtn">Show Answer</button>
+    <div class="flashcard-controls">
+      <button onclick="prevFlashcard()">Previous</button>
+      <button onclick="nextFlashcard()">Next</button>
+    </div>
+  </div>
+
+  <div class="topic-section" id="topicsContainer"></div>
+
+  <footer>
+    &copy; 2025 Hanolka Tutoring — Where guidance meets understanding.
+  </footer>
+
+  <script>
+    const biologyTopics = {
+      "Cell Biology": {
+        "Cell Structure": [
+          { q: "What is the function of the mitochondria?", a: "To produce ATP through aerobic respiration." },
+          { q: "What organelle contains digestive enzymes?", a: "Lysosome." }
+        ],
+        "Microscopy": [
+          { q: "What is resolution in microscopy?", a: "The ability to distinguish two separate points." }
+        ]
+      },
+      "Biological Molecules": {
+        "Carbohydrates": [
+          { q: "What is the monomer of carbohydrates?", a: "Monosaccharides (e.g., glucose)." }
+        ],
+        "Water, Ions, & ATP": [
+  { q: "Describe the structure of ATP and explain how it is suited to its role as an immediate energy source.", a: "ATP consists of adenine, ribose, and three phosphate groups; its unstable bonds between phosphates release small, manageable amounts of energy quickly when hydrolysed." },
+  { q: "Outline the dual role of ATP hydrolase in both energy release and metabolic coupling.", a: "ATP hydrolase catalyses ATP hydrolysis, releasing energy and supplying phosphate groups to phosphorylate and activate other molecules." },
+  { q: "In what two key processes is ATP synthesised, and what common principle underlies both?", a: "Substrate-level phosphorylation (e.g., glycolysis) and chemiosmosis (electron transport chain); both involve coupling energy release to ATP production via condensation reactions." },
+  { q: "ATP hydrolysis releases 30.8 kJ mol⁻¹. How is this energy transfer regulated within cells to prevent heat damage?", a: "ATP releases small amounts of energy per reaction, minimising heat loss, and its rapid resynthesis ensures a constant, regulated supply." },
+  { q: "Explain how water’s polarity leads to both its solvent properties and its role in metabolic reactions.", a: "The dipole nature enables water to form hydration shells around ions and polar molecules, dissolving them, and also makes it a reactant in hydrolysis reactions." },
+  { q: "Why is it advantageous for water to have both high cohesion and adhesion in plant physiology?", a: "Cohesion maintains continuous water columns in xylem during transpiration; adhesion helps water stick to xylem walls, supporting upward movement against gravity." },
+  { q: "How does the high specific heat capacity of water benefit aquatic organisms and enzymes?", a: "It buffers sudden temperature fluctuations, creating a stable environment critical for maintaining enzyme activity and biological processes." },
+  { q: "Compare the roles of phosphate ions in both energy storage and membrane structure.", a: "In ATP, phosphate groups store and transfer energy; in phospholipids, phosphate heads contribute to bilayer formation due to their hydrophilicity." },
+  { q: "Describe how sodium ions facilitate both nerve impulse transmission and nutrient absorption.", a: "Sodium ions establish electrochemical gradients across membranes (nerve impulses) and enable glucose/amino acid co-transport in the small intestine." },
+  { q: "Iron ions alternate between Fe²⁺ and Fe³⁺ states in haemoglobin and the electron transport chain. What is the biological significance of this redox ability?", a: "It allows iron to reversibly bind and release oxygen molecules and shuttle electrons between proteins, crucial for respiration and oxygen delivery." },
+  { q: "Explain why ice floating on water is vital for aquatic ecosystems in cold climates.", a: "Ice insulates the water below, preventing freezing throughout and allowing aquatic life to survive during winter." },
+  { q: "Water’s high latent heat of vaporisation is essential for thermoregulation. Explain how this property benefits terrestrial mammals.", a: "A large amount of heat energy is required to evaporate water (sweat), allowing efficient cooling while conserving water volume." },
+  { q: "What effect would a decrease in extracellular calcium ions have on muscle function?", a: "It would impair muscle contraction by reducing the binding of calcium to troponin, inhibiting actin-myosin interactions." },
+  { q: "Describe how changes in hydrogen ion (H⁺) concentration can denature enzymes.", a: "Excess H⁺ ions disrupt ionic and hydrogen bonds in the tertiary structure of enzymes, altering the active site and reducing enzyme function." }
+]
+
+      },
+      "Organisms Respond to Changes in their Environment": {
+      "Nervous Coordination": [
+      
+  { "q": "Describe how the sodium-potassium pump and membrane permeability establish the resting potential in a neurone.", "a": "The Na⁺/K⁺ pump actively transports 3 Na⁺ out and 2 K⁺ in, creating a net negative charge inside. The membrane is more permeable to K⁺, allowing K⁺ to diffuse out more readily than Na⁺ diffuses in, establishing a –70 mV resting potential." },
+  { "q": "Explain why the inside of an axon is negatively charged at rest despite the presence of positive ions.", "a": "Due to active transport of Na⁺ out and K⁺ in, and higher membrane permeability to K⁺, more positive charge leaves the axon than enters. Large anionic proteins also remain inside, contributing to negativity." },
+  { "q": "What would happen to resting potential if the sodium-potassium pump was inhibited?", "a": "Ion gradients would dissipate over time; Na⁺ would accumulate inside, K⁺ outside, reducing the resting potential toward zero and ultimately preventing action potential generation." },
+  { "q": "What triggers the opening of voltage-gated Na⁺ channels during depolarisation?", "a": "A stimulus causes the membrane potential to reach threshold (~–55 mV), triggering conformational change in voltage-gated Na⁺ channels and their rapid opening." },
+  { "q": "Why does depolarisation become self-perpetuating once threshold is reached?", "a": "Initial Na⁺ influx further depolarises the membrane, opening more Na⁺ channels via positive feedback until peak potential is reached." },
+  { "q": "Describe the ionic movements responsible for repolarisation and hyperpolarisation.", "a": "Na⁺ channels close; K⁺ channels open → K⁺ leaves the axon, restoring negativity. K⁺ efflux overshoots, causing hyperpolarisation below –70 mV." },
+  { "q": "Define the absolute and relative refractory periods and explain their physiological significance.", "a": "Absolute: no AP can be generated (Na⁺ channels inactivated). Relative: AP possible only with strong stimulus (membrane hyperpolarised). These ensure unidirectionality and discrete APs." },
+  { "q": "Why does saltatory conduction increase the speed of impulse transmission?", "a": "In myelinated axons, depolarisation only occurs at nodes of Ranvier, so the impulse jumps from node to node, reducing the number of depolarisations and speeding conduction." },
+  { "q": "How does axon diameter influence the speed of nerve impulses?", "a": "Larger diameters reduce internal resistance to ion flow, allowing faster movement of charge and therefore faster AP conduction." },
+  { "q": "Describe the role of calcium ions at the presynaptic membrane of a cholinergic synapse.", "a": "Arrival of an AP opens voltage-gated Ca²⁺ channels; Ca²⁺ influx causes vesicles containing ACh to fuse with the membrane and release ACh into the synaptic cleft." },
+  { "q": "What ensures that neurotransmitters such as ACh do not continually stimulate the postsynaptic neurone?", "a": "Acetylcholinesterase hydrolyses ACh in the cleft into choline and acetate, which are reabsorbed and recycled by the presynaptic neurone." },
+  { "q": "Compare spatial and temporal summation in synaptic transmission.", "a": "Spatial: Multiple presynaptic neurones release neurotransmitter onto one postsynaptic cell simultaneously. Temporal: One neurone releases neurotransmitter rapidly in succession. Both allow threshold to be reached." },
+  { "q": "Explain how summation contributes to synaptic plasticity.", "a": "Summation enables the postsynaptic neurone to integrate multiple signals, allowing learning and modulation of response strength depending on input frequency or convergence." },
+  { "q": "What is the effect of an acetylcholinesterase inhibitor at a neuromuscular junction?", "a": "It prevents breakdown of ACh, prolonging depolarisation and contraction, potentially causing sustained muscle contraction or spasms." },
+  { "q": "How do curare and nicotine exert opposite effects at cholinergic synapses?", "a": "Curare is an antagonist that blocks ACh receptors, inhibiting depolarisation. Nicotine is an agonist that mimics ACh and stimulates receptors." },
+  { "q": "Why does the action potential only travel in one direction along an axon?", "a": "The refractory period behind the AP prevents backward conduction, as Na⁺ channels are inactivated and the membrane is hyperpolarised." },
+  { "q": "Outline the role of T-tubules and the sarcoplasmic reticulum in muscle contraction.", "a": "T-tubules transmit APs deep into muscle fibres, triggering Ca²⁺ release from the sarcoplasmic reticulum, which initiates contraction by exposing actin binding sites." },
+  { "q": "Explain how the structure of a neuromuscular junction ensures a strong and reliable response.", "a": "Each motor neurone synapses with a large muscle fibre surface area. ACh always causes depolarisation, and many receptors ensure reliable muscle fibre activation." },
+  { "q": "Compare the types of postsynaptic responses in a neuromuscular junction versus a neurone-neurone synapse.", "a": "NMJs are always excitatory, leading to contraction. Neurone-neurone synapses can be excitatory or inhibitory, affecting the likelihood of AP generation." },
+  { "q": "Complete the comparison table: Postsynaptic cell, receptor type, and response — between neuromuscular junctions and neurone-neurone synapses.", "a": "NMJ: postsynaptic cell is skeletal muscle fibre, ACh receptors linked to Na⁺ channels, always excitatory. Neurone-neurone: postsynaptic cell is another neurone, receptor varies, can be excitatory or inhibitory." }
+],
+        "Skeletal Muscles": [
+  { q: "A drug inhibits calcium reuptake into the sarcoplasmic reticulum. Predict the immediate and longer-term effects on muscle contraction and relaxation.", a: "Immediate: Prolonged contraction, as Ca²⁺ remains in the sarcoplasm, maintaining troponin activation. Longer-term: Muscle cannot fully relax → muscle fatigue, potential cramping; impaired re-availability of Ca²⁺ for future contractions." },
+  { q: "A mutation prevents troponin from binding Ca²⁺. What are the consequences at the molecular level?", a: "Tropomyosin remains in place, covering actin binding sites. Myosin heads cannot form cross-bridges. Muscle contraction is completely inhibited, leading to paralysis despite neural stimulation." },
+  { q: "During anaerobic exercise, why might a fast twitch muscle fibre outcompete a slow twitch fibre for performance, even if aerobic conditions are restored shortly after?", a: "Fast twitch fibres have higher phosphocreatine and glycogen stores → rapid ATP synthesis anaerobically. Despite lower fatigue resistance, their high glycolytic enzyme content allows sustained high-power output until aerobic systems catch up." },
+  { q: "Explain how the length of the I-band and H-zone changes during contraction. What does this reveal about filament behavior?", a: "Both the I-band and H-zone shorten. A-band remains unchanged. Indicates thin filaments (actin) slide over thick filaments (myosin) — confirms sliding filament theory, not filament shortening." },
+  { q: "How would a deficiency in ATP affect each stage of the cross-bridge cycle?", a: "Myosin remains attached to actin → no detachment. Power stroke may not reset (no myosin re-cocking). Ca²⁺ reuptake into SR is impaired → no relaxation. Result: Rigor-like muscle stiffness (e.g. rigor mortis after death)." },
+  { q: "Compare the advantages and disadvantages of using lipids vs glucose as fuel in slow twitch muscle fibres.", a: "Advantages: Lipids yield more ATP per molecule → efficient for sustained, low-intensity activity. Disadvantages: Slower breakdown → not ideal for sudden bursts or anaerobic conditions." },
+  { q: "You’re analysing a muscle biopsy. The cells are red, packed with mitochondria, and resist fatigue. What test would confirm they’re slow twitch fibres, and why?", a: "Test for oxidative enzyme activity. High oxidative enzyme activity confirms aerobic respiration dominance, typical of slow twitch fibres." },
+  { q: "Why does repeated stimulation of a motor neurone lead to stronger muscle contractions (up to a point)?", a: "Increased frequency → temporal summation of Ca²⁺ in sarcoplasm. Ca²⁺ doesn't return fully to SR → more troponin saturation → more cross-bridges. Eventually plateaus due to saturation of binding sites and ATP/Ca²⁺ limitations." },
+  { q: "If a drug blocks ACh receptors at the neuromuscular junction, what is the consequence? How could this be overcome clinically?", a: "No depolarisation of sarcolemma → no contraction. Clinically: Use anticholinesterases to increase ACh levels in cleft (e.g. for treating myasthenia gravis)." },
+  { q: "Explain why myoglobin is essential in slow twitch fibres, particularly during aerobic respiration.", a: "Myoglobin binds O₂ with high affinity → acts as O₂ reservoir. Releases O₂ during low oxygen conditions → sustains oxidative phosphorylation during prolonged activity." }
+],
+          "Homeostasis": [
+          
+  { 
+    q: "Define homeostasis and explain why it is critical for enzyme function.", 
+    a: "Homeostasis is the regulation of internal conditions to maintain a stable internal environment within narrow physiological limits around an optimum. It ensures enzymes remain at their optimum temperature and pH, preventing denaturation and allowing maximal metabolic efficiency." 
+  },
+  { 
+    q: "Outline the roles of receptors, coordinators, and effectors in homeostatic regulation.", 
+    a: "Receptors detect changes from the set point, coordinators (e.g. hypothalamus) process this information and formulate a response, and effectors (e.g. glands, muscles) enact the response to restore the optimum internal environment." 
+  },
+  { 
+    q: "Contrast negative and positive feedback mechanisms, giving one biological example of each.", 
+    a: "Negative feedback restores the system to the original set point by reversing a change (e.g. insulin secretion in response to high blood glucose), while positive feedback amplifies the change (e.g. oxytocin during childbirth contractions)." 
+  },
+  { 
+    q: "Describe the hormonal and cellular response to an increase in blood glucose concentration.", 
+    a: "β-cells of the pancreas detect high blood glucose and secrete insulin. Insulin binds to receptors on hepatocytes and muscle cells, triggering the insertion of GLUT4 transporters, stimulating glycogenesis and increasing glucose uptake, lowering blood glucose." 
+  },
+  { 
+    q: "Explain how glucagon increases blood glucose levels and outline the processes involved.", 
+    a: "α-cells detect low blood glucose and secrete glucagon, which binds to hepatocyte receptors, activating enzymes that catalyse glycogenolysis and gluconeogenesis, while inhibiting glycogenesis." 
+  },
+  { 
+    q: "Describe the second messenger model as it applies to adrenaline’s role in glycogen breakdown.", 
+    a: "Adrenaline binds to membrane receptors on liver cells, activating adenylyl cyclase to convert ATP to cAMP. cAMP acts as a second messenger activating protein kinase A, triggering a cascade that results in glycogenolysis." 
+  },
+  { 
+    q: "Compare the causes and treatments of Type I and Type II diabetes mellitus.", 
+    a: "Type I is an autoimmune destruction of β-cells → no insulin → treated with insulin injections. Type II involves insulin resistance (downregulation of receptors) → treated via lifestyle changes and insulin-sensitising drugs like metformin." 
+  },
+  { 
+    q: "Outline the stages and purpose of ultrafiltration in the nephron.", 
+    a: "High hydrostatic pressure in the glomerulus forces water, ions, glucose, and urea into Bowman’s capsule through the basement membrane and podocytes, excluding large proteins and blood cells — filtering the blood plasma." 
+  },
+  { 
+    q: "Explain how glucose is reabsorbed in the proximal convoluted tubule.", 
+    a: "Na⁺ is actively transported into the blood from epithelial cells, creating a concentration gradient. Na⁺ and glucose are co-transported into cells via symporters; glucose then diffuses into blood via facilitated diffusion. This is secondary active transport." 
+  },
+  { 
+    q: "Describe how the loop of Henle establishes a countercurrent multiplier and its significance.", 
+    a: "In the ascending limb, Na⁺/Cl⁻ ions are actively transported into the medulla, lowering water potential. The descending limb is permeable to water, so water diffuses out osmotically. This maintains a medullary gradient to allow water reabsorption from the collecting duct." 
+  },
+  { 
+    q: "Explain the role of ADH in regulating water potential of the blood.", 
+    a: "Low blood water potential is detected by osmoreceptors in the hypothalamus, triggering ADH release from the posterior pituitary. ADH increases aquaporin insertion in the DCT and collecting duct, increasing water permeability and reabsorption, producing concentrated urine." 
+  },
+  { 
+    q: "Describe the role of the hypothalamus in thermoregulation.", 
+    a: "The hypothalamus contains thermoreceptors that monitor blood temperature. It coordinates autonomic nervous responses via effectors such as sweat glands, blood vessels, and skeletal muscles to maintain core temperature." 
+  },
+  { 
+    q: "List and explain three physiological responses to a decrease in core temperature.", 
+    a: "Vasoconstriction reduces blood flow to the skin surface to conserve heat; shivering generates heat through muscle contraction; piloerection traps an insulating air layer." 
+  },
+  { 
+    q: "Why is the regulation of temperature via the nervous system and not hormones advantageous?", 
+    a: "Nervous responses are faster and more precise, which is critical for maintaining narrow temperature ranges necessary for optimal enzyme function in rapidly changing environments." 
+  }
+],
+
+          
+      }
+    };
+
+    let currentFlashcards = [], currentIndex = 0, answerVisible = false;
+
+    function createTopicButtons() {
+      const container = document.getElementById("topicsContainer");
+      for (const topic in biologyTopics) {
+        const topicBtn = document.createElement("button");
+        topicBtn.className = "topic-button";
+        topicBtn.textContent = topic;
+        topicBtn.onclick = () => toggleSubtopics(topic);
+
+        const subtopicDiv = document.createElement("div");
+        subtopicDiv.className = "subtopics";
+        subtopicDiv.id = `subtopics-${topic}`;
+
+        for (const sub in biologyTopics[topic]) {
+          const subBtn = document.createElement("button");
+          subBtn.textContent = sub;
+          subBtn.onclick = () => loadFlashcards(topic, sub);
+          subtopicDiv.appendChild(subBtn);
+        }
+
+        container.appendChild(topicBtn);
+        container.appendChild(subtopicDiv);
+      }
+    }
+
+    function toggleSubtopics(topic) {
+      const all = document.querySelectorAll(".subtopics");
+      all.forEach(el => el.classList.remove("active"));
+      const target = document.getElementById(`subtopics-${topic}`);
+      target.classList.add("active");
+    }
+
+    function loadFlashcards(topic, subtopic) {
+      currentFlashcards = biologyTopics[topic][subtopic];
+      currentIndex = 0;
+      answerVisible = false;
+
+      document.getElementById("flashcardDisplay").style.display = "flex";
+      document.getElementById("topicTitle").textContent = `${topic} > ${subtopic}`;
+      showFlashcard();
+    }
+
+    function showFlashcard() {
+      const q = currentFlashcards[currentIndex];
+      document.getElementById("questionText").textContent = q.q;
+      document.getElementById("answerText").textContent = q.a;
+      document.getElementById("answerText").style.display = answerVisible ? "block" : "none";
+      document.getElementById("showAnswerBtn").textContent = answerVisible ? "Hide Answer" : "Show Answer";
+    }
+
+    function toggleAnswer() {
+      answerVisible = !answerVisible;
+      showFlashcard();
+    }
+
+    function nextFlashcard() {
+      if (currentFlashcards.length > 0) {
+        currentIndex = (currentIndex + 1) % currentFlashcards.length;
+        answerVisible = false;
+        showFlashcard();
+      }
+    }
+
+    function prevFlashcard() {
+      if (currentFlashcards.length > 0) {
+        currentIndex = (currentIndex - 1 + currentFlashcards.length) % currentFlashcards.length;
+        answerVisible = false;
+        showFlashcard();
+      }
+    }
+
+    function closeFlashcards() {
+      document.getElementById("flashcardDisplay").style.display = "none";
+    }
+
+    // Initialize on load
+    createTopicButtons();
+  </script>
+</body>
+</html>

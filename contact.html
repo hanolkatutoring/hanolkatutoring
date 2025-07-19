@@ -198,9 +198,47 @@
     }
 
     @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      .dropdown-content {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+      }
+      .dropdown {
+        width: 100%;
+      }
+      header {
+        padding: 2rem 0.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
       .contact-container {
         margin: 2rem 1rem;
         padding: 1.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.3rem;
+      }
+      .modal-content {
+        padding: 0.5rem !important;
+      }
+      .section-link {
+        font-size: 1rem;
+      }
+      .image-block {
+        aspect-ratio: unset;
+        min-height: 120px;
       }
     }
   </style>
