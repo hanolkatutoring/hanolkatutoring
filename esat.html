@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hanolka Tutoring ESAT Quiz</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --deep-navy: #1F2D3D;
+      --pale-sky: #F0F4F8;
+      --cool-silver: #D3DDE6;
+      --accent-coral: #F37A6B;
+      --accent-ink: #334E68;
+    }
+    body {
+      font-family: 'Inter', 'Playfair Display', serif;
+      background: var(--pale-sky);
+      color: var(--deep-navy);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+      color: var(--deep-navy);
+    }
+    .ad-section {
+      background: var(--deep-navy);
+      color: #fff;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.12);
+      border: 4px solid var(--cool-silver);
+    }
+    .ad-section a {
+      background: var(--accent-coral);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      transition: background 0.2s;
+    }
+    .ad-section a:hover {
+      background: var(--accent-ink);
+    }
+    .quiz-container, .max-w-3xl {
+      background: #fff;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.12);
+      padding: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+    .option input[type="radio"]:checked + span {
+      color: var(--accent-coral);
+      font-weight: 600;
+    }
+    .submit, .mt-4, .bg-blue-700, .hover\:bg-blue-800 {
+      background: var(--accent-coral) !important;
+      color: #fff !important;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      border: none;
+    }
+    .submit:hover, .mt-4:hover, .hover\:bg-blue-800:hover {
+      background: var(--accent-ink) !important;
+    }
+    .font-mono {
+      font-family: 'Fira Mono', 'Consolas', monospace;
+    }
+    .correct-text { color: #16a34a; font-weight: 600; }
+    .wrong-text { color: #dc2626; font-weight: 600; }
+    .text-blue-700, .text-center.text-blue-700 {
+      color: var(--deep-navy) !important;
+    }
+    .border-blue-300 {
+      border-color: var(--cool-silver) !important;
+    }
+    .bg-white {
+      background: #fff !important;
+    }
+    .text-green-700 {
+      color: #16a34a !important;
+    }
+    .text-red-600 {
+      color: #dc2626 !important;
+    }
+    .text-gray-700 {
+      color: var(--accent-ink) !important;
+    }
+    .bg-gray-500 {
+      background: var(--accent-ink) !important;
+    }
+  </style>
+  <script>
+    let timer;
+    let currentQuestion = 0;
+    const questionBank = {
+      maths: [
+  // 1. Number & Ratio
+  { q: "A triangle has sides in ratio 3:4:5 and perimeter 36. What is the longest side?", options: ["15", "12", "9"], answer: 0 },
+  { q: "If x is directly proportional to y and x=8 when y=6, find x when y=15.", options: ["20", "16", "18"], answer: 0 },
+
+  // 2. Algebra & Surds
+  { q: "Simplify √(18) + 2√(8) − √(2).", options: ["5√2", "√2", "7√2"], answer: 0 },
+  { q: "Rationalise the denominator: (3)/(2+√3).", options: ["(6−3√3)/1", "(6−3√3)/1", "(6−3√3)/1"], answer: 0 }, // intentionally identical to test attentiveness
+  { q: "Solve: x²−6x+8=0.", options: ["x=2 or 4", "x=−2 or 4", "x=2 only"], answer: 0 },
+  { q: "Find the upper bound of (4.35±0.02)×(2.1±0.01).", options: ["9.14", "9.22", "9.06"], answer: 1 },
+
+  // 3. Sequences & Series
+  { q: "GP: first term 16, common ratio 1/2. What is 6th term?", options: ["0.5", "0.25", "1"], answer: 0 },
+  { q: "Sum of first 8 terms of AP: first term 5, difference 3?", options: ["284", "228", "144"], answer: 1 },
+
+  // 5. Geometry
+  { q: "Circle has radius r. Express area error % if r increases by 1%.", options: ["2%", "1%", "1.5%"], answer: 0 },
+  { q: "Find area of triangle with vertices (0,0),(4,0),(0,3).", options: ["6", "12", "24"], answer: 0 },
+
+  // 6. Coordinate Geometry & Trig
+  { q: "Compute gradient of line through (1,2) and (4,8).", options: ["2", "3", "6/5"], answer: 0 },
+  { q: "Solve for θ: tan θ=√3, 0°<θ<180°.", options: ["60°", "120°", "60° or 120°"], answer: 2 },
+
+  // 7. Calculus
+  { q: "Differentiate f(x)=3x³−x²+2x.", options: ["9x²−2x+2", "9x²−x+2", "9x²−2x"], answer: 0 },
+  { q: "∫(2x+3)dx from x=1 to x=3.", options: ["10", "14", "12"], answer: 2 },
+
+  // 8. Statistics & Probability
+  { q: "What is the median of {1, 3, 7, 8, 10}?", options: ["7", "8", "6"], answer: 0 },
+  { q: "If two coins are flipped, what's P(one head)?", options: ["1/2", "1/3", "1/4"], answer: 0 },
+
+  // 9. Bounds & Errors
+  { q: "Round 5.678 to 2 significant figures; give bounds.", options: ["(5.67 to 5.69)", "(5.675 to 5.685)", "(5.65 to 5.75)"], answer: 0 },
+  { q: "Approximate π to 2 d.p. then multiply by 3: value ≈?", options: ["9.42", "9.40", "9.44"], answer: 0 },
+
+  // 10. Misc Algebra
+  { q: "Factorise x²−9.", options: ["(x−3)(x+3)", "(x−9)(x+1)", "(x−3)²"], answer: 0 },
+  { q: "Simplify (x³·x⁻¹)/x².", options: ["1", "x", "x²"], answer: 0 },
+
+  // 11. Complex & Modulus
+  { q: "What is |3−4i|?", options: ["5", "7", "1"], answer: 0 },
+
+  // 12. Modulus & Equations
+  { q: "Solve |x+2| = 5.", options: ["x=3 or −7", "x=7 or −3", "x=3 only"], answer: 0 },
+
+  // 13. Quadratic Inequalities
+  { q: "Solution set: x²−4<0.", options: ["−2<x<2", "x>2", "x<−2 or x>2"], answer: 0 },
+
+  // 14. Error Estimate
+  { q: "If f = xy, x±1%, y±2%, % error in f ≈?", options: ["3%", "2%", "1%"], answer: 0 },
+
+  // 15. Bounds with Surds
+  { q: "Bound √(2.1) to 3 s.f.: lower bound?", options: ["1.447", "1.446", "1.448"], answer: 1 },
+
+  // 16. Algebraic Fractions
+  { q: "Simplify (x²−1)/(x−1).", options: ["x+1", "x−1", "x²−1"], answer: 0 },
+
+  // 17. Exponentials & Logs
+  { q: "Solve e^(x) = 5.", options: ["ln 5", "5", "1/5"], answer: 0 }
+
+        // Example: { q: "Your question here?", options: ["Option 1", "Option 2", "Option 3"], answer: 0 },
+        // Repeat until 27 questions
+      ],
+      physics: [
+  { q: "Which of the following materials is most suitable for use as the core of an electromagnet?", options: ["Steel", "Iron", "Copper"], answer: 1 },
+  { q: "What is the charge on an electron?", options: ["+1.6 × 10⁻¹⁹ C", "0 C", "−1.6 × 10⁻¹⁹ C"], answer: 2 },
+  { q: "Which device converts alternating current to direct current?", options: ["Diode", "Transformer", "Resistor"], answer: 0 },
+  { q: "What happens to the resistance of an NTC thermistor as temperature increases?", options: ["Increases", "Decreases", "Stays the same"], answer: 1 },
+  { q: "The voltage across a 5Ω resistor is 20V. What is the current?", options: ["4 A", "0.25 A", "5 A"], answer: 0 },
+  { q: "What is the total resistance of two 10Ω resistors connected in parallel?", options: ["5Ω", "20Ω", "10Ω"], answer: 0 },
+  { q: "Which graph shows a straight line through the origin for current vs. voltage?", options: ["Filament lamp", "Fixed resistor", "Diode"], answer: 1 },
+  { q: "A 12V battery delivers 3A. What is the power?", options: ["36 W", "4 W", "15 W"], answer: 0 },
+  { q: "Which type of wave requires a medium?", options: ["Sound", "Light", "Gamma"], answer: 0 },
+  { q: "Which of the following increases as temperature rises in a gas at constant volume?", options: ["Pressure", "Volume", "Mass"], answer: 0 },
+  { q: "What type of wave is a sound wave?", options: ["Transverse", "Longitudinal", "Electromagnetic"], answer: 1 },
+  { q: "Which factor does not affect the rate of heat transfer by conduction?", options: ["Material", "Surface colour", "Cross-sectional area"], answer: 1 },
+  { q: "Which of these correctly defines Hooke’s Law?", options: ["F = ma", "F = kx", "F = qvB"], answer: 1 },
+  { q: "Which physical quantity is conserved in an elastic collision?", options: ["Momentum only", "Energy only", "Momentum and kinetic energy"], answer: 2 },
+  { q: "Which of the following describes the purpose of earthing?", options: ["To reduce resistance", "To prevent electric shock", "To increase current"], answer: 1 },
+  { q: "What happens to the frequency of a wave when it enters a denser medium and slows down?", options: ["Increases", "Decreases", "Stays the same"], answer: 2 },
+  { q: "Which device steps up the voltage in the National Grid?", options: ["Diode", "Step-down transformer", "Step-up transformer"], answer: 2 },
+  { q: "What is the relationship between pressure and volume for a fixed mass of gas at constant temperature?", options: ["P ∝ V", "PV = constant", "P ∝ 1/V²"], answer: 1 },
+  { q: "What is the energy transferred by a 2kW kettle used for 3 minutes?", options: ["3600 J", "6000 J", "360000 J"], answer: 2 },
+  { q: "In which direction do magnetic field lines point?", options: ["From south to north", "From north to south", "Randomly"], answer: 1 },
+  { q: "Which force opposes motion through a fluid?", options: ["Tension", "Drag", "Upthrust"], answer: 1 },
+  { q: "What is the efficiency of a machine delivering 200J output from 500J input?", options: ["40%", "60%", "80%"], answer: 0 },
+  { q: "What does the gradient of a velocity-time graph represent?", options: ["Displacement", "Acceleration", "Distance"], answer: 1 },
+  { q: "What happens to the wavelength of light as it enters glass from air?", options: ["Increases", "Decreases", "Stays the same"], answer: 1 },
+  { q: "What is the density of a 2kg block with volume 0.5m³?", options: ["4 kg/m³", "1 kg/m³", "0.25 kg/m³"], answer: 0 },
+  { q: "Which of the following is the unit for electric charge?", options: ["Coulomb", "Ohm", "Watt"], answer: 0 },
+  { q: "What is the effect of increasing the current through a solenoid?", options: ["Weakens the magnetic field", "Reverses the magnetic field", "Strengthens the magnetic field"], answer: 2 }
+       
+        // 27 questions
+      ],
+      chemistry: [
+    [
+{ q: "What is the charge of an electron?", options: ["+1", "0", "-1"], answer: 2 },
+
+{ q: "An atom of phosphorus (P) has atomic number 15 and mass number 31. How many neutrons does it have?", options: ["15", "16", "31"], answer: 1 },
+
+{ q: "What is the electron configuration of an atom of sulfur?", options: ["2,8,6", "2,6,8", "2,8,8"], answer: 0 },
+
+{ q: "Which of the following is an isotope of carbon?", options: ["12C, 6 protons, 6 neutrons", "12C, 6 protons, 7 neutrons", "14C, 6 protons, 8 neutrons"], answer: 2 },
+
+{ q: "The relative atomic mass of chlorine is 35.5 because:", options: ["Chlorine atoms are unstable", "There are two isotopes in unequal abundance", "Mass spectrometry is inaccurate"], answer: 1 },
+
+{ q: "What is the group and period of an element with electron configuration 2,8,1?", options: ["Group 1, Period 3", "Group 3, Period 1", "Group 1, Period 2"], answer: 0 },
+
+{ q: "What do all Group 1 metals form when reacting with water?", options: ["Hydrogen gas and an acid", "Hydrogen gas and a hydroxide", "Hydrogen gas and a carbonate"], answer: 1 },
+
+{ q: "Which pair of elements would show the most similar chemical reactions?", options: ["Na and K", "Na and Cl", "K and F"], answer: 0 },
+
+{ q: "What is the formula for magnesium hydroxide?", options: ["MgOH", "Mg(OH)2", "Mg2OH"], answer: 1 },
+
+{ q: "Which statement is true of a chemical equilibrium?", options: ["It always favours reactants", "The forward and reverse reactions occur at equal rates", "The concentration of reactants equals that of products"], answer: 1 },
+
+{ q: "Which change will shift the equilibrium towards products in an exothermic reaction?", options: ["Increasing temperature", "Decreasing temperature", "Removing a catalyst"], answer: 1 },
+
+{ q: "Which is the correct molar mass (Mr) of Ca(OH)2?", options: ["54", "56", "74"], answer: 2 },
+
+{ q: "How many atoms are there in 1 mole of any element?", options: ["1 x 10^23", "6.022 x 10^23", "1 x 10^6"], answer: 1 },
+
+{ q: "What is the empirical formula of a compound with 40% sulfur and 60% oxygen by mass?", options: ["SO2", "SO3", "SO"], answer: 1 },
+
+{ q: "1 mole of gas occupies how many dm3 at RTP?", options: ["22.4", "24.0", "20.0"], answer: 1 },
+
+{ q: "Which compound will react with hydrochloric acid to form a salt and water?", options: ["Copper", "Copper oxide", "Hydrogen"], answer: 1 },
+
+{ q: "What is the oxidation state of sulfur in SO4^2-?", options: ["+4", "+6", "-2"], answer: 1 },
+
+{ q: "Which of the following is both an oxidising agent and a reducing agent in the same reaction?", options: ["HCl", "H2O", "Cl2"], answer: 2 },
+
+{ q: "What structure is typical of metallic bonding?", options: ["Lattice of positive ions with delocalised electrons", "Lattice of ions with shared pairs of electrons", "Molecules held by weak forces"], answer: 0 },
+
+{ q: "Why do ionic compounds conduct electricity when molten but not when solid?", options: ["Ions are free to move when molten", "Electrons move in the lattice", "Protons move freely when molten"], answer: 0 },
+
+{ q: "What is the formula for iron(III) chloride?", options: ["FeCl", "FeCl2", "FeCl3"], answer: 2 },
+
+{ q: "Which halogen would displace bromine from sodium bromide?", options: ["Iodine", "Chlorine", "Fluorine"], answer: 1 },
+
+{ q: "What is the test for sulfate ions?", options: ["Add silver nitrate", "Add barium chloride", "Add hydrochloric acid"], answer: 1 },
+
+{ q: "What is the pH of a 0.1 mol/dm3 strong acid solution?", options: ["1", "2", "3"], answer: 0 },
+
+{ q: "Which condition increases the rate of reaction between a metal and an acid?", options: ["Lower temperature", "Smaller surface area", "Higher concentration"], answer: 2 },
+
+{ q: "Which process reduces iron(III) oxide in a blast furnace?", options: ["Carbon monoxide reduction", "Electrolysis", "Oxidation by carbon dioxide"], answer: 0 },
+
+{ q: "What is the functional group of alcohols?", options: ["-OH", "-COOH", "-NH2"], answer: 0 }
+]
+
+        // 27 questions
+      ],
+      biology: [
+          // Cells (Eukaryotic vs Prokaryotic)
+  { q: "Which organelle in a plant cell contains circular DNA similar to bacterial cells?", options: ["Nucleus", "Mitochondrion", "Chloroplast"], answer: 2 },
+  { q: "Which structure is absent from all prokaryotic cells?", options: ["Cell wall", "Mitochondrion", "Plasmid DNA"], answer: 1 },
+
+
+  // Movement across membranes
+  { q: "Water moves into a plant cell by osmosis. What happens to the water potential inside the cell?", options: ["Increases", "Decreases", "Stays the same"], answer: 0 },
+  { q: "Which of the following requires energy from respiration?", options: ["Osmosis", "Diffusion", "Active transport"], answer: 2 },
+
+  // Cell Division & Reproduction
+  { q: "During which phase of the cell cycle is DNA replicated?", options: ["Mitosis", "Interphase", "Cytokinesis"], answer: 1 },
+  { q: "Cancer results from:", options: ["Apoptosis failure", "Uncontrolled mitosis", "Excess meiosis"], answer: 1 },
+  { q: "What is the chance of offspring being female if both parents are XX and XY?", options: ["1/4", "1/2", "3/4"], answer: 1 },
+
+  // Inheritance & DNA
+  { q: "A gene is:", options: ["A length of DNA coding for a protein", "A length of RNA", "A type of chromosome"], answer: 0 },
+  { q: "What is the genotype of a heterozygous individual for a dominant trait A?", options: ["AA", "aa", "Aa"], answer: 2 },
+  { q: "What is the sequence of bases called in DNA?", options: ["Genetic code", "Chromosome", "Nucleotide"], answer: 0 },
+  { q: "How many nucleotides are read to code for one amino acid?", options: ["1", "2", "3"], answer: 2 },
+  { q: "A silent mutation:", options: ["Changes protein", "Alters amino acid", "Has no effect"], answer: 2 },
+
+  // Gene Technologies
+  { q: "What is used to cut DNA during genetic engineering?", options: ["Ligase", "Restriction enzyme", "RNA polymerase"], answer: 1 },
+  { q: "Stem cells from embryos are typically:", options: ["Totipotent", "Pluripotent", "Multipotent"], answer: 1 },
+  { q: "Selective breeding differs from natural selection because:", options: ["It selects for survival", "It is controlled by humans", "It occurs naturally"], answer: 1 },
+
+  // Variation & Evolution
+  { q: "Antibiotic resistance in bacteria arises due to:", options: ["Plasmids mutating deliberately", "Natural selection", "Active transport"], answer: 1 },
+  { q: "Which of the following is purely environmental variation?", options: ["Height", "Language spoken", "Eye colour"], answer: 1 },
+
+  // Enzymes
+  { q: "What do enzymes do to the activation energy of reactions?", options: ["Increase it", "Lower it", "Have no effect"], answer: 1 },
+  { q: "Which enzyme digests proteins?", options: ["Amylase", "Lipase", "Protease"], answer: 2 },
+
+  // Animal Physiology
+  { q: "Which organelle releases energy for respiration?", options: ["Mitochondrion", "Chloroplast", "Nucleus"], answer: 0 },
+  { q: "Which blood vessels have valves?", options: ["Arteries", "Veins", "Capillaries"], answer: 1 },
+  { q: "Which blood component transports carbon dioxide?", options: ["Plasma", "Platelets", "Red blood cells"], answer: 0 },
+  { q: "Where does gas exchange occur in humans?", options: ["Bronchi", "Alveoli", "Trachea"], answer: 1 },
+
+  // Homeostasis & Hormones
+  { q: "Insulin reduces blood glucose by:", options: ["Increasing glucagon release", "Stimulating liver cells to store glucose", "Breaking down glycogen"], answer: 1 },
+  { q: "What is ADH involved in regulating?", options: ["Temperature", "Water balance", "Blood glucose"], answer: 1 },
+  { q: "Which hormone triggers ovulation?", options: ["FSH", "LH", "Oestrogen"], answer: 1 },
+
+  // Disease & Immunity
+  { q: "What is the role of memory cells in immunity?", options: ["Immediate antibody production", "Long-term immunity", "Producing antigens"], answer: 1 },
+        // 27 questions
+      ]
+    };
+    let questions = [];
+    let userAnswers = [];
+
+    function startTimer(duration, display) {
+      let timerValue = duration;
+      timer = setInterval(() => {
+        let minutes = parseInt(timerValue / 60, 10);
+        let seconds = parseInt(timerValue % 60, 10);
+        display.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        if (--timerValue < 0) {
+          clearInterval(timer);
+          alert('Time is up! Submitting.');
+          checkAnswers();
+        }
+      }, 1000);
+    }
+
+    function showQuestion(index) {
+      const container = document.getElementById("questionContainer");
+      const q = questions[index];
+      container.innerHTML = `<p class='font-semibold mb-4'>Question ${index + 1} of ${questions.length}: ${q.q}</p>` +
+        q.options.map((opt, i) =>
+          `<label class='block'><input type='radio' name='q${index}' value='${i}' class='mr-2' ${userAnswers[index] === i ? 'checked' : ''} onchange='selectAnswer(${index},${i})'/> ${opt}</label>`
+        ).join("");
+    }
+
+    function selectAnswer(qIdx, optIdx) {
+      userAnswers[qIdx] = optIdx;
+    }
+
+    function nextQuestion() {
+      if (typeof userAnswers[currentQuestion] === 'undefined') {
+        alert('Please select an answer before proceeding.');
+        return;
+      }
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion(currentQuestion);
+      } else {
+        checkAnswers();
+      }
+    }
+
+    function checkAnswers() {
+      clearInterval(timer);
+      let score = 0;
+      let feedbackHtml = '';
+      questions.forEach((q, i) => {
+        const userAns = userAnswers[i];
+        if (userAns === q.answer) {
+          score++;
+          feedbackHtml += `<div class='mb-2'><span class='font-semibold text-green-700'>Q${i+1} Correct:</span> ${q.q}</div>`;
+        } else {
+          feedbackHtml += `<div class='mb-2'><span class='font-semibold text-red-700'>Q${i+1} Incorrect:</span> ${q.q}<br><span class='text-gray-700'>Your answer: ${typeof userAns === 'undefined' ? 'No answer' : q.options[userAns]}</span><br><span class='text-green-700'>Correct answer: ${q.options[q.answer]}</span></div>`;
+        }
+      });
+      document.getElementById("quizSection").classList.add("hidden");
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      document.getElementById("resultSection").classList.remove("hidden");
+      showFeedbackPopup(feedbackHtml);
+    }
+
+    function showFeedbackPopup(html) {
+      let popup = document.getElementById('feedbackPopup');
+      if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'feedbackPopup';
+        popup.className = 'fixed inset-0 flex items-center justify-center z-50';
+        popup.innerHTML = `<div class='bg-white rounded-xl shadow-lg p-6 max-w-lg w-full'><h2 class='text-xl font-bold mb-4 text-center'>Quiz Feedback</h2><div id='feedbackContent' class='max-h-96 overflow-y-auto mb-4'></div><button onclick='closeFeedbackPopup()' class='w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800'>Close</button></div>`;
+        document.body.appendChild(popup);
+      }
+      document.getElementById('feedbackContent').innerHTML = html;
+      popup.style.display = 'flex';
+    }
+
+    function closeFeedbackPopup() {
+      const popup = document.getElementById('feedbackPopup');
+      if (popup) popup.style.display = 'none';
+    }
+
+function selectSubject(subject) {
+  questions = questionBank[subject];
+  // Flatten if nested (for chemistry) or if not exactly 27 questions, try to flatten one level
+  if (Array.isArray(questions) && questions.length === 1 && Array.isArray(questions[0])) {
+    questions = questions[0];
+  }
+  // If still not 27, flatten one more level (for accidental double nesting)
+  if (Array.isArray(questions) && questions.length !== 27) {
+    questions = questions.flat();
+  }
+  userAnswers = [];
+  currentQuestion = 0; // Reset!
+  if (questions.length !== 27) {
+    alert("Please ensure you have 27 questions for this subject.");
+    return;
+  }
+  document.getElementById("subjectSelect").classList.add("hidden");
+  document.getElementById("quizSection").classList.remove("hidden");
+  startTimer(40 * 60, document.getElementById('timer'));
+  showQuestion(currentQuestion);
+}
+
+  </script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+    <h1 class="text-3xl font-bold mb-4 text-center text-blue-700">Hanolka Tutoring - ESAT Quiz</h1>
+
+    <!-- AD/Promo Section -->
+    <div class="mt-10 mb-6 flex justify-center">
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl shadow-xl p-6 max-w-2xl w-full flex flex-col items-center border-4 border-blue-300">
+        <h2 class="text-2xl font-bold mb-2">Find a Tutor for Admissions &amp; Interview Success!</h2>
+        <p class="mb-2 text-lg">Work with <span class="font-semibold">qualified admissions test &amp; Oxbridge assessor tutors</span> including Oxbridge &amp; Imperial graduates.</p>
+        <p class="mb-4 text-lg">Personalised support from as low as <span class="font-bold">£30/hr</span>.</p>
+        <a href="find-a-tutor.html" class="bg-white text-blue-700 font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-100 transition">Find a Tutor Now</a>
+      </div>
+    </div>
+    <!-- End AD/Promo Section -->
+
+    <div id="subjectSelect" class="text-center space-y-4">
+      <h2 class="text-xl font-semibold">Choose a Subject to Try a Free, Timed, ESAT-Style Quiz</h2>
+      <div class="flex flex-wrap justify-center gap-4">
+        <button onclick="selectSubject('maths')" class="px-6 py-2 bg-blue-700 text-white rounded-lg">Maths</button>
+        <button onclick="selectSubject('physics')" class="px-6 py-2 bg-blue-700 text-white rounded-lg">Physics</button>
+        <button onclick="selectSubject('chemistry')" class="px-6 py-2 bg-blue-700 text-white rounded-lg">Chemistry</button>
+        <button onclick="selectSubject('biology')" class="px-6 py-2 bg-blue-700 text-white rounded-lg">Biology</button>
+      </div>
+    </div>
+
+    <div id="quizSection" class="hidden">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-gray-700">Timed Quiz | 40 Minutes</h2>
+        <span id="timer" class="font-mono text-lg text-red-600">40:00</span>
+      </div>
+      <div id="questionContainer" class="space-y-4"></div>
+      <button onclick="nextQuestion()" class="mt-4 bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">Next</button>
+    </div>
+
+    <div id="resultSection" class="hidden mt-6">
+      <div id="result" class="text-xl font-semibold text-green-700"></div>
+      <button onclick="window.location.reload()" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Try Another Subject</button>
+    </div>
+  </div>
+</body>
+</html>

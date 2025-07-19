@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="favicon.png">
-  <title>A-Level Biology | Hanolka Tutoring</title>
+  <title>Admissions Tests | Hanolka Tutoring</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -26,9 +26,6 @@
       background-color: var(--pale-sky);
       color: var(--deep-navy);
       line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;  /* Ensures the page takes at least the full height of the viewport */
     }
 
     nav {
@@ -72,18 +69,17 @@
     }
 
     section {
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
       display: flex;
-      justify-content: center;  /* Centers the buttons */
-      align-items: flex-start;  /* Ensures buttons are aligned to the top */
+      flex-direction: column;
+      align-items: center;
       gap: 2rem;
-      flex-wrap: wrap;
-      flex-grow: 1;  /* Makes sure the section grows as needed without stretching the buttons */
     }
 
     .resource-link {
+      display: inline-block;
       padding: 1rem 2rem;
       background-color: var(--accent-coral);
       color: white;
@@ -91,11 +87,6 @@
       border-radius: 8px;
       font-weight: 600;
       transition: background-color 0.3s;
-      display: inline-block;
-      text-align: center;
-      min-width: 160px;  /* Ensures a minimum width for the buttons */
-      width: 200px; /* Set a fixed width for the buttons */
-      box-sizing: border-box; /* Ensures padding doesn't affect button width */
     }
 
     .resource-link:hover {
@@ -108,7 +99,6 @@
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
-      margin-top: auto;  /* Pushes the footer to the bottom */
     }
   </style>
 </head>
@@ -124,15 +114,15 @@
   </nav>
 
   <header>
-    <h1>A-Level Biology Resources</h1>
-    <p>Select your exam board to explore tailored Biology materials.</p>
+    <h1>Admissions Test Resources</h1>
+    <p>Select your level to explore Admissions Test materials.</p>
   </header>
 
   <section>
-    <a href="bio-a-lvl-aqa.html" class="resource-link">AQA</a>
-    <a href="resources-constr.html" class="resource-link">Edexcel (Coming soon)</a>
-    <a href="resources-constr.html" class="resource-link">OCR (coming soon)</a>
-    <a href="resources-constr.html" class="resource-link">OCR-MEI (coming soon)</a>
+    <a href="esat.html" class="resource-link">ESAT</a>
+    <a href="resources-constr.html" class="resource-link">LNAT (coming soon)</a>
+    <a href="resources-constr.html" class="resource-link">UCAT (coming soon)</a>
+    <a href="resources-constr.html" class="resource-link">11+ (coming soon)</a>
   </section>
 
   <footer>
